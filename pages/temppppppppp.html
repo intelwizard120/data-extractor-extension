@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datatera Popup</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <!-- <link rel="stylesheet" href="../assets/css/mdb.min.css"> -->
+    <style>
+      body {
+        background-color: white;
+      }
+      .container {
+        width: 319px;
+        /* height: 300px; */
+      }
+      /* table > tr, th, td {
+        padding: 5px !important;
+      } */
+      .table-wrapper {
+        display: block;
+        
+        max-height: 400px;
+        max-width: 319px;
+        overflow-x: auto;
+        overflow-y: auto;
+        white-space: nowrap;
+      }
+      .tera-container {
+        height: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;">
+        <a href="./conversions.html" style="font-size: 15px; color: black">Back</a>
+        <a id="logout-btn" style="font-size: 15px; color: black" >Logout</a>
+      </div>
+      <div class="tera-container">
+        <section class="tera-welcome-top">
+          <img src="/assets/images/logo.png" alt="" />
+          <h1>Upload Data</h1>
+          <p style="width: 140px">Choose a data source</p>
+        </section>
+  
+        <section class="tera-action-section">
+          <button id="file_upload_btn" class="action-btn tera-action-btn">File</button>
+          <a href="" id="text_upload_btn" class="action-btn tera-action-btn">Text</a>
+          <button id="url_upload_btn" class="action-btn tera-action-btn">URLs</button>
+        </section>
+
+        <div class="table-wrapper">
+          <table class="table table-striped" border="1">
+            <thead id="table-columns">
+            </thead>
+            <tbody id="table-rows">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+    </div>
+
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/mdb.min.js"></script>
+    <script src="./logout.js"></script>
+
+    <script src="./conversion-table.js"></script>
+  </body>
+</html>

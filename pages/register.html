@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datatera Popup</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+
+  <body>
+    <!-- Login Screen - Screen 1 -->
+    <div id="screen-1" class="tera-container">
+      <section class="tera-login-top">
+        <img src="/assets/images/logo.png" alt="" />
+        <h1>Register</h1>
+        <p>Explore the future with us</p>
+      </section>
+
+      <section class="tera-login-middle">
+
+        <!-- Login Form -->
+        <form id="register_form">
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+          >
+            <label class="tera-email-label">
+              <p>Email Address</p>
+            </label>
+            <input
+              id="user-email"
+              type="text"
+              placeholder="myemail@gmail.com"
+              required
+            />
+            <input
+              id="user-password"
+              type="password"
+              placeholder="Password"
+              required
+            />
+
+            <input
+              id="user-confirm-password"
+              type="password"
+              placeholder="confirm password"
+              required
+            />
+          </div>
+
+          <div
+            style="display: flex; flex-direction: column; align-items: center"
+          >
+            <button type="submit" id="login-btn" class="email-login-btn">Register</button>
+
+            <!-- <div id="google-login-btn" class="google-login-btn">
+              <img src="/assets/images/google.png" alt="" style="width: 24; height: 24px" />
+              <p>Sign in with Google</p>
+            </div> -->
+          </div>
+        </form>
+        <p style="text-align: center; margin-top: 5px;">Message</p>
+      </section>
+
+      <section class="tera-login-bottom">
+        <p class="hovery">
+          <a href="login.html">Login Now</a>
+        </p>
+      </section>
+    </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="register.js"></script>
+  </body>
+</html>

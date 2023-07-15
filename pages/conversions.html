@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datatera Popup</title>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+  </head>
+
+  <body>
+    <div class="tera-container" style="padding-bottom: 10px;">
+      <div style="text-align: right; padding-top: 10px; margin-right: 10px; color: black !important; font-size: 15px;">
+        
+      <a href="#" id="logout-btn">Logout</a>
+      </div>
+      
+      <section class="tera-welcome-top">
+        <img src="/assets/images/logo.png" alt="" />
+        <h1>Welcome back!</h1>
+        <p>Create a new conversion or select an existing one from the list</p>
+      </section>
+
+      <section class="tera-conversion-list" id="tera-conversion-list"></section>
+      <a href="./add-conversions.html" class="tera-conversion-btn" style="margin-top: 5px">
+        <img src="/assets/images/plus.png" />
+        <div>New Conversion</div>
+      </a>
+    </div>
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="./logout.js"></script>
+
+    <script src="conversions.js"></script>
+  </body>
+</html>

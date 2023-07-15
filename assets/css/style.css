@@ -1,0 +1,620 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #000;
+}
+
+h1,
+p {
+    font-family: 'Inter', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #4AA181;
+}
+
+.hovery {
+    cursor: pointer;
+}
+
+.tera-container {
+    width: 319px;
+    height: 521px;
+    background-color: #fff;
+}
+
+.tera-login-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tera-login-top h1 {
+    font-size: 24px;
+    color: #4AA181;
+    margin-top: 7px;
+}
+
+.tera-login-top img {
+    width: 32px;
+    height: 32px;
+    margin-top: 16px;
+}
+
+.tera-login-top p {
+    color: #92929D;
+    font-size: 14px;
+    line-height: 12px;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.tera-login-middle {
+    margin-top: 72px;
+}
+
+.tera-login-middle input {
+    border: 1px solid #E2E2EA;
+    border-radius: 10px;
+    width: 259px;
+    height: 48px;
+    padding-left: 20px;
+    font-family: 'Inter';
+    font-size: 14px;
+    line-height: 17px;
+    letter-spacing: 0.1px;
+    color: #4AA181;
+}
+
+.tera-email-label {
+    width: auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 22px;
+    background: #F1F1F5;
+    border-radius: 11px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 14px;
+    color: #44444F;
+    text-align: center;
+
+    align-self: baseline;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 35px;
+    margin-bottom: -10px;
+    z-index: 1;
+}
+
+.tera-login-middle input[type="text"]::placeholder {
+    color: #4AA181;
+}
+
+.tera-login-middle input[type=password] {
+    margin-top: 10px;
+    color: #44444F;
+}
+
+.tera-login-middle form .forgot-password {
+    margin-top: 10px;
+    margin-right: 19px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #92929D;
+}
+
+.tera-login-middle .email-login-btn {
+    background: #4AA181;
+    border-radius: 10px;
+    width: 276px;
+    height: 48px;
+    border: 0;
+    color: #fff;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+
+    margin-top: 15px;
+}
+
+.tera-login-middle .google-login-btn {
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    background: #F1F1F5;
+    border-radius: 10px;
+    width: 276px;
+    height: 48px;
+    border: 0;
+    color: #44444F;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+
+    margin-top: 14px;
+}
+
+.google-login-btn img {
+    margin-right: 10px;
+}
+
+.tera-login-middle .email-login-btn:hover {
+    cursor: pointer;
+    background-color: #285746;
+}
+
+.tera-login-middle .google-login-btn:hover {
+    cursor: pointer;
+    background-color: black;
+    color: #fff
+}
+
+.tera-login-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 41px;
+}
+
+.tera-login-bottom p {
+    color: #4AA181;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    /* identical to box height */
+    letter-spacing: 0.1px;
+}
+
+.tera-welcome-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tera-welcome-top img {
+    width: 32px;
+    height: 32px;
+    margin-top: 16px;
+}
+
+.tera-welcome-top h1 {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: #4AA181;
+    margin-top: 7px;
+}
+
+.tera-welcome-top p {
+    color: #92929D;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    margin-top: 1px;
+    text-align: center;
+    width: 239px;
+    height: 34px;
+}
+
+.tera-conversion-list {
+    display: flex;
+    background-color: #292932;
+    border-radius: 10px;
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+    width: 280px;
+    height: 282px;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 32px;
+    padding-bottom: 9.33px;
+
+    overflow-y: auto;
+
+    position: relative;
+
+
+}
+
+/* Styling the scrollbar track */
+#tera-conversion-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#tera-conversion-list::-webkit-scrollbar-track {
+    background-color: #292932;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-top: 10px;
+}
+
+/* Styling the scrollbar thumb */
+#tera-conversion-list::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+}
+
+/* Styling the scrollbar thumb on hover */
+#tera-conversion-list::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+    border-radius: 10px;
+}
+
+.tera-conversion-item {
+    margin-left: 16.33px;
+    margin-top: 23px;
+    display: flex;
+    flex-direction: row;
+}
+
+.tera-conversion-item img {
+    width: 13.33px;
+    height: 13.33px;
+}
+
+.tera-conversion-item p {
+    color: #FAFAFB;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    margin-left: 11.33px;
+}
+
+.tera-conversion-item p:hover {
+    cursor: pointer;
+    color: #4AA181;
+}
+
+.button-container {
+    padding-bottom: 18px;
+    background-color: #292932;
+    width: 280px;
+    margin: 0 auto;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.tera-conversion-btn {
+    background-color: #4AA181;
+    width: 248px;
+    height: 48px;
+    border-radius: 10px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    color: #fff;
+
+    margin: 0 auto;
+    /* margin-top: 25.33px; */
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* 
+    position: absolute;
+    bottom: 18px;
+    left: 16px; */
+}
+
+.tera-conversion-btn img {
+    height: 10.67px;
+    width: 10.67px;
+    margin-right: 12.67px;
+}
+
+.tera-conversion-btn:hover {
+    cursor: pointer;
+    background-color: #285746;
+}
+
+.tera-upload-section form {
+    margin-top: 57px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tera-upload-name {
+
+    border: 1px solid #E2E2EA;
+    border-radius: 10px;
+    width: 259px;
+    height: 48px;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    /* identical to box height */
+    letter-spacing: 0.1px;
+    color: #4AA181;
+
+    padding-left: 20px;
+}
+
+.tera-upload-name::placeholder {
+    color: #4AA181;
+}
+
+.tera-upload-section form>div {
+    margin-top: 24px;
+    border: 1px dashed #92929D;
+    border-radius: 20px;
+    width: 279px;
+    height: 161px;
+}
+
+.tera-upload-section div p {
+    color: #000;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+
+    margin-top: 37px;
+}
+
+.tera-csv-upload-btn {
+    margin-top: 36px;
+    background: #F1F1F5;
+    border-radius: 10px;
+    width: 146px;
+    height: 48px;
+    border: 0;
+
+    color: #44444F;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 12px;
+    text-align: center;
+}
+
+.tera-csv-upload-btn:hover {
+    cursor: pointer;
+    background-color: #d2d2df;
+}
+
+.tera-create-btn {
+    margin-top: 24px;
+    background: #4AA181;
+    border-radius: 10px;
+    width: 279px;
+    height: 48px;
+    border: 0;
+
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    color: #FFFFFF;
+}
+
+.tera-create-btn:hover {
+    cursor: pointer;
+    background-color: #285746;
+}
+
+.tera-csv-uploaded {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 39px;
+}
+
+.tera-csv-uploaded img {
+    width: 16px;
+    height: 20px;
+}
+
+.tera-uploaded-file-name {
+    font-family: 'Inter';
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+    margin-left: 14px;
+}
+
+.tera-uploaded-filesize {
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    /* identical to box height */
+    color: #92929D;
+    margin-left: 10px;
+}
+
+.tera-action-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: 30px;
+}
+
+.tera-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 279px;
+    height: 48px;
+    background: #F1F1F5;
+    border-radius: 10px;
+    margin-bottom: 8px;
+
+    color: #44444F;
+}
+
+.tera-action-btn:hover {
+    cursor: pointer;
+    /* background-color: #292932; */
+    /* color: #fff; */
+    filter: invert(100%);
+}
+
+
+.tera-action-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.tera-action-btn p {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+
+    margin-left: 10px;
+}
+
+.tera-message-section {
+    margin-top: 135px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tera-success-message {
+    font-family: 'Inter';
+    font-style: normal;
+    color: #4AA181;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.tera-link {
+    font-family: 'Inter';
+    font-style: normal;
+    color: #92929D;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+
+    margin-top: 11px;
+    width: 213px;
+
+    word-wrap: break-word;
+}
+
+.tera-view-data-btn {
+    background-color: #4AA181;
+    border: 0;
+    width: 279px;
+    height: 48px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+
+    /* position: fixed; */
+    position: absolute;
+    bottom: 40px;
+}
+
+.tera-view-data-btn-relative {
+    position: relative;
+}
+
+.tera-view-data-btn:hover {
+    cursor: pointer;
+    background-color: #285746;
+}
+
+/* Default Styles For Unified File*/
+#screen-2,
+#screen-3,
+#screen-4,
+#screen-5,
+#screen-6 {
+    display: none;
+}
+
+/* Loader for Action Button Click */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(51, 51, 51, 0.5);
+}
+
+.loader::after {
+    content: "";
+    width: 75px;
+    height: 75px;
+    border: 15px solid #ddd;
+    border-top-color: #009578;
+    border-radius: 50%;
+    animation: loading 0.75s ease infinite;
+}
+
+@keyframes loading {
+    from { transform: rotate(0turn);}
+    to { transform: rotate(1turn);}
+}
+
+#text_data {
+    border: 1px solid rgb(226, 226, 234);
+    border-radius: 10px;
+    padding: 15px;
+    width: 80%;
+    height: 250px;
+}

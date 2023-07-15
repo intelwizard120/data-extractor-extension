@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datatera Popup</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        .tera-container {
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tera-container">
+        <div style="display: flex; justify-content: space-between; padding-bottom: 5px; padding-left: 5px; padding-right: 5px;">
+            <a href="./conversions.html" style="font-size: 15px; color: black">Back</a>
+            <a href="#" id="logout-btn" style="font-size: 15px; color: black" >Logout</a>
+          </div>
+        <section class="tera-welcome-top">
+            <img src="/assets/images/logo.png" alt="">
+            <h1>Upload Data</h1>
+            <p style="width: 140px;">Select the area you want to send for conversion</p>
+        </section>
+
+        <section class="tera-action-section">
+            
+            <div class="tera-action-btn" id="upload_whole_page_btn">
+                <img class="tera-action-icon" src="/assets/images/webpage.png" alt="">
+                <p>Upload Whole Web page</p>
+            </div>
+            <div class="tera-action-btn">
+                <img class="tera-action-icon" src="/assets/images/cursor.png" alt="">
+                <p>Selected Content</p>
+            </div>
+            <div class="tera-action-btn" id="screenshot_area_btn">
+                <img class="tera-action-icon" src="/assets/images/screenshot.png" alt="">
+                <p>Screenshot area</p>
+            </div>
+            <div class="tera-action-btn" id="file_upload_btn">
+                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
+                <p>Upload File</p>
+            </div>
+            <div class="tera-action-btn" id="url_upload_btn" >
+                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
+                <p>Upload URLs</p>
+            </div>
+            <div class="tera-action-btn" id="text_upload_btn">
+                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
+                <p>Upload Text</p>
+            </div>
+            <br />
+            <br />
+
+            <div class="tera-action-btn" style="background-color: white;">
+                <img class="tera-action-icon" src="/assets/images/file.png" alt="">
+                <p>Reload CSV</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="./screenshot-area.js"></script>
+    <script src="./logout.js"></script>
+
+    <script src="./conversion-actions.js"></script>
+</body>
+
+</html>
