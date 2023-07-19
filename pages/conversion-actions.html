@@ -25,12 +25,13 @@
             <h1>Upload Data</h1>
             <p style="width: 140px;">Select the area you want to send for conversion</p>
         </section>
+        <div class="loader" style="display: none;"></div>
 
         <section class="tera-action-section">
             
             <div class="tera-action-btn" id="upload_whole_page_btn">
                 <img class="tera-action-icon" src="/assets/images/webpage.png" alt="">
-                <p>Upload Whole Web page</p>
+                <p>Upload whole Web page</p>
             </div>
             <div class="tera-action-btn">
                 <img class="tera-action-icon" src="/assets/images/cursor.png" alt="">
@@ -44,22 +45,49 @@
                 <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
                 <p>Upload File</p>
             </div>
-            <div class="tera-action-btn" id="url_upload_btn" >
+            <!-- <div class="tera-action-btn" id="url_upload_btn" >
                 <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
                 <p>Upload URLs</p>
-            </div>
+            </div> -->
             <div class="tera-action-btn" id="text_upload_btn">
                 <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
                 <p>Upload Text</p>
             </div>
-            <br />
-            <br />
 
             <div class="tera-action-btn" style="background-color: white;">
                 <img class="tera-action-icon" src="/assets/images/file.png" alt="">
                 <p>Reload CSV</p>
             </div>
+           
         </section>
+       <div style="display: flex;padding-left: 25px;">
+        <div>
+            <div style="display: flex;align-items: center;">
+                <input type="checkbox" id="processURLs" name="processURLs">
+                <label for="processURLs" style="margin-left: 5px;" class="options-text">Process URLs</label>
+            </div>
+            <div style="margin-top: 10px;">
+                <label for="returnRowsLimit" class="options-text">Return rows limit <br/>(0 for unlimited rows):</label> 
+                <br/>
+                <input type="number" style="width: 50px;margin-top: 5px;" id="returnRowsLimit" name="returnRowsLimit" value="0">
+            </div>
+        </div>
+        <div style="margin-left: 30px;">
+            <div style="display: flex;align-items: center;">
+                <input type="checkbox" id="smartMerge" name="smartMerge" >
+                <label for="smartMerge" style="margin-left: 5px;" class="options-text">Smart Merge</label>
+            </div>
+            
+            <div style="margin-top: 10px;">
+                <br/>
+                <label for="model" class="options-text">AI model:</label>
+                <br/>
+                <input type="number" id="model" name="model" value="1" style="width: 50px;margin-top: 5px;">
+            </div>
+        </div>
+       </div>
+       
+        
     </div>
 
     <script src="../assets/js/jquery.min.js"></script>
