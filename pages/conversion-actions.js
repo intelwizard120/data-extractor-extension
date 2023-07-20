@@ -2,7 +2,7 @@ let search = location.search.substring(1);
 search = search.split("=");
 let conversionId = search[1];
 
-const uploadFileToDb = (data) => {
+const uploadFileToDb = (data, type) => {
   let textCheckBox = false;
   if (document.getElementById("processURLs").checked) {
     textCheckBox = true;
@@ -20,7 +20,7 @@ const uploadFileToDb = (data) => {
 
   let model = document.getElementById("model").value;
   const file = new File([data], " ", {
-    type: "text/plain",
+    type: type === "text" ? "text/plain" : "text/html",
   });
   let formData = new FormData();
   formData.append("file", file);
@@ -151,10 +151,40 @@ document
             pageSourceString = result;
           }
 
-          uploadFileToDb(pageSourceString);
+          uploadFileToDb(pageSourceString, "html");
         })
         .catch((e) => {
           console.log(e);
         });
     });
   });
+
+document.getElementById("highlight-action").addEventListener("click", () => {
+  var loaderElement = document.querySelector(".loader");
+  loaderElement.style.display = "flex";
+  let highlightedText = "";
+
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    function returnHighlight() {
+      selectedText = window.getSelection().toString();
+      console.log("Selected text:", selectedText);
+      return selectedText;
+    }
+
+    chrome.scripting
+      .executeScript({
+        target: { tabId: tabs[0].id },
+        func: returnHighlight,
+      })
+      .then((injectionResults) => {
+        for (const { frameId, result } of injectionResults) {
+          console.log(`Frame ${frameId} result:`, result);
+          highlightedText = result;
+        }
+
+        console.log(`highlightedText: ${highlightedText}`);
+        uploadFileToDb(highlightedText, "text");
+      })
+      .catch();
+  });
+});
