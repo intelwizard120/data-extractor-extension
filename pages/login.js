@@ -1,5 +1,9 @@
-chrome.storage.local.get(["userLoggedIn"], (d) => {
-  if (d.userLoggedIn == null || d.userLoggedIn == undefined || d.userLoggedIn == "") {
+chrome.storage.local.get(["userLoggedIn"], (d) => {  
+  if (
+    d.userLoggedIn == null ||
+    d.userLoggedIn == undefined ||
+    d.userLoggedIn == ""
+  ) {
   } else {
     chrome.action.setPopup({ popup: "/pages/conversions.html" });
     window.location.href = "./conversions.html";
@@ -41,8 +45,15 @@ $(document).ready(() => {
   });
 });
 
-document.getElementById("google-login-btn").addEventListener("click", (e) => {
-  chrome.identity.getAuthToken({ 'interactive': true }, function (token) {
-    console.log(token);
-  });
-})
+document.getElementById("google-login-btn").addEventListener("click", (e) => {  
+  chrome.runtime.sendMessage({ message: "google-login" });
+});
+
+chrome.runtime.onMessage.addListener((req, sender, res) => {
+  if (req.message === "dashboard") showDashboard();
+});
+
+function showDashboard() {
+  chrome.action.setPopup({ popup: "/pages/conversions.html" });
+  window.location.href = "./conversions.html";
+}
