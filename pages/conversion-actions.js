@@ -44,7 +44,9 @@ const uploadFileToDb = (data, type) => {
     ) {
       console.log("Token Not FOUND");
     } else {
-      fetch("http://localhost:5000/api/v1/conversion/uploadFileToDb", {
+      //"http://new-app.datatera.io/v1/conversion/uploadFileToDb"
+      //"http://localhost:5000/api/v1/conversion/uploadFileToDb"
+      fetch("http://new-app.datatera.io/v1/conversion/uploadFileToDb", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + d.token,
