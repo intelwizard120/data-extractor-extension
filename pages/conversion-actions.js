@@ -2,7 +2,7 @@ let search = location.search.substring(1);
 search = search.split("=");
 let conversionId = search[1];
 
-const uploadFileToDb = (data, type) => {
+const uploadFileToDb = (data, type, selectedFile) => {
   let textCheckBox = false;
   if (document.getElementById("processURLs").checked) {
     textCheckBox = true;
@@ -19,11 +19,16 @@ const uploadFileToDb = (data, type) => {
   let returnRowsLimitValue = document.getElementById("returnRowsLimit").value;
 
   let model = document.getElementById("model").value;
-  const file = new File([data], " ", {
-    type: type === "text" ? "text/plain" : "text/html",
-  });
+
   let formData = new FormData();
-  formData.append("file", file);
+  if (type === "file") {
+    formData.append("file", selectedFile);
+  } else {
+    const file = new File([data], " ", {
+      type: type === "text" ? "text/plain" : "text/html",
+    });
+    formData.append("file", file);
+  }
   formData.append("processUrls", `${textCheckBox ? true : false}`);
   formData.append("id", conversionId);
   formData.append(
@@ -159,6 +164,24 @@ document
     });
   });
 
+document.getElementById("file_upload_btn").addEventListener("click", () => {
+  console.log("Upload action clicked");
+
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.click();
+  fileInput.addEventListener("change", () => {
+    var loaderElement = document.querySelector(".loader");
+    loaderElement.style.display = "flex";
+
+    const selectedFile = fileInput.files[0];
+    console.log("Selected file:", selectedFile);
+    uploadFileToDb("", "file", selectedFile);
+
+    fileInput.value = null;
+  });
+});
+
 document.getElementById("highlight-action").addEventListener("click", () => {
   var loaderElement = document.querySelector(".loader");
   loaderElement.style.display = "flex";
@@ -188,3 +211,14 @@ document.getElementById("highlight-action").addEventListener("click", () => {
       .catch();
   });
 });
+
+// document.getElementById("upload_txt").addEventListener("submit", (e) => {
+//   let textInput = document.getElementById("text_data").value;
+
+//   const file = new File([textInput], "text.txt", {
+//     type: "text/plain",
+//   });
+
+//   console.log(textInput);
+//   uploadFileToDb("", "file", file);
+// });
