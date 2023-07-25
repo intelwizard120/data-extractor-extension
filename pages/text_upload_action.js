@@ -10,52 +10,37 @@ document
   .getElementById("text_upload_action_form")
   .addEventListener("submit", (e) => {
     e.preventDefault();
-    let textCheckBox = false;
+    var loaderElement = document.querySelector(".loader");
+    loaderElement.style.display = "flex";
 
-    if (document.getElementById("process_urls").checked) {
+    let textCheckBox = false;
+    if (document.getElementById("processURLs").checked) {
       textCheckBox = true;
     } else {
       textCheckBox = false;
     }
-
-    // let finalTxtData = [];
-
-    // let tableData;
-    // let tableHeaders;
-
-    // tableData?.map((el) => {
-    //   let obj = {};
-    //   tableHeaders?.map((hd, i) => {
-    //     obj[hd] = el[i];
-    //   });
-    //   delete obj["Date/Time"];
-    //   delete obj["FileName"];
-    //   finalTxtData.push(obj);
-    //   obj = {};
-    // });
-
+    let mergeCheckBox = false;
+    if (document.getElementById("smartMerge").checked) {
+      mergeCheckBox = true;
+    } else {
+      mergeCheckBox = false;
+    }
+    let returnRowsLimitValue = document.getElementById("returnRowsLimit").value;
+    let model = document.getElementById("model").value;
+    let formData = new FormData();
     let textInput = document.getElementById("text_data").value;
-    console.log(textInput);
-    // const sample_file = new Blob([JSON.stringify(finalTxtData)], {
-    //   type: "text/plain",
-    // });
-
     const file = new File([textInput], "text.txt", {
       type: "text/plain",
     });
-
-    let formData = new FormData();
     formData.append("file", file);
-    // formData.append("sample_file", sample_file);
-    // formData.append("processUrls", `${textCheckBox ? true : false}`);
-    formData.append("processUrls", false);
+    formData.append("processUrls", `${textCheckBox ? true : false}`);
     formData.append("id", conversionId);
-    formData.append("returnRowsLimit", null);
-    formData.append("merge", false);
-    formData.append("model", 1);
-
-    console.log(formData);
-
+    formData.append(
+      "returnRowsLimit",
+      `${returnRowsLimitValue ? returnRowsLimitValue : null}`
+    );
+    formData.append("merge", `${mergeCheckBox ? true : false}`);
+    formData.append("model", `${model ? model : null}`);
     chrome.storage.local.get(["token", "userData"], (d) => {
       if (
         d.token == null ||
@@ -66,7 +51,7 @@ document
       ) {
         console.log("Token Not FOUND");
       } else {
-        fetch("https://new-app.datatera.io/api/v1/conversion/uploadFileToDb", {
+        fetch("http://localhost:5000/api/v1/conversion/uploadFileToDb", {
           method: "POST",
           headers: {
             Authorization: "Bearer " + d.token,
@@ -74,32 +59,22 @@ document
           body: formData,
         })
           .then((res) => res.json())
-          .then((resp) => console.log(resp));
+          .then((resp) => {
+            var loaderElement = document.querySelector(".loader");
+            loaderElement.style.display = "none";
+
+            if (Array.isArray(resp) && resp?.length === 0) {
+              window.location.href =
+                "/pages/no-new-data-recognized.html?id=" + conversionId;
+            } else {
+              window.location.href =
+                "/pages/success-page.html?id=" + conversionId;
+            }
+          })
+          .catch((e) => {
+            var loaderElement = document.querySelector(".loader");
+            loaderElement.style.display = "none";
+          });
       }
     });
-
-    // $.ajax({
-    //   type: "POST",
-    //   url: "https://new-app.datatera.io/api/v1/conversion/uploadFileToDb",
-    //   data: formData,
-    //   dataType: "json",
-    //   // enctype: "multipart/form-data",
-    //   processData: false,
-    //   contentType: false,
-    //   // cache: false,
-    //   contentType: "application/json",
-    //   success: function (data) {
-    //     console.log(data);
-    //     // chrome.action.setPopup({ popup: "/pages/login.html" });
-    //     // window.location.href = "./login.html?register=success";
-    //   },
-    //   error: function (e) {
-    //     let error = e.responseJSON;
-    //     console.log(error.message);
-    //     console.log("I am error");
-    //   },
-    //   complete: function (data) {
-    //     console.log("I am complete");
-    //   },
-    // });
   });

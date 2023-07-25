@@ -16,6 +16,8 @@
       <a id="back-btn" href="/pages/conversion-actions.html" style="font-size: 15px; color: black">Back</a>
       <a href="#" id="logout-btn" style="font-size: 15px; color: black" >Logout</a>
     </div>
+    <div class="loader" style="display: none;"></div>
+
     <div class="tera-container">
       <h1 style="padding: 10px;">Upload Text</h1>
       <form id="text_upload_action_form" style="padding: 15px;">
@@ -27,9 +29,37 @@
           <p>minimum 10 - characters</p>
         </div>
         <br />
-        <input type="checkbox" name="process_urls" id="process_urls"> Process URLs
+        <!-- <input type="checkbox" name="process_urls" id="process_urls"> Process URLs
         <br />
-        <br />
+        <br /> -->
+        <div style="display: flex;padding-left: 25px;">
+          <div>
+              <div style="display: flex;align-items: center;">
+                  <input type="checkbox" id="processURLs" name="processURLs">
+                  <label for="processURLs" style="margin-left: 5px;" class="options-text">Process URLs</label>
+              </div>
+              <div style="margin-top: 10px;">
+                  <label for="returnRowsLimit" class="options-text">Return rows limit <br/>(0 for unlimited rows):</label> 
+                  <br/>
+                  <input type="number" style="width: 50px;margin-top: 5px;" id="returnRowsLimit" name="returnRowsLimit" value="0">
+              </div>
+          </div>
+          <div style="margin-left: 30px;">
+              <div style="display: flex;align-items: center;">
+                  <input type="checkbox" id="smartMerge" name="smartMerge" >
+                  <label for="smartMerge" style="margin-left: 5px;" class="options-text">Smart Merge</label>
+              </div>
+              
+              <div style="margin-top: 10px;">
+                  <br/>
+                  <label for="model" class="options-text">AI model:</label>
+                  <br/>
+                  <input type="number" id="model" name="model" value="1" style="width: 50px;margin-top: 5px;">
+              </div>
+          </div>
+         </div>
+         <br/>
+
         <button class="tera-conversion-btn" style="border: 0;">Upload</button>
       </form>
     </div>
