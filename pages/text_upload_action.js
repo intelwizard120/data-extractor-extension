@@ -35,7 +35,7 @@ document
     // });
 
     let textInput = document.getElementById("text_data").value;
-    console.log(textInput)
+    console.log(textInput);
     // const sample_file = new Blob([JSON.stringify(finalTxtData)], {
     //   type: "text/plain",
     // });
@@ -48,29 +48,36 @@ document
     formData.append("file", file);
     // formData.append("sample_file", sample_file);
     // formData.append("processUrls", `${textCheckBox ? true : false}`);
-    formData.append("processUrls", false)
+    formData.append("processUrls", false);
     formData.append("id", conversionId);
     formData.append("returnRowsLimit", null);
     formData.append("merge", false);
     formData.append("model", 1);
 
-    console.log(formData)
+    console.log(formData);
 
     chrome.storage.local.get(["token", "userData"], (d) => {
-      if((d.token == null || d.token == undefined ||  d.token =="") || (d.userData == null || d.userData == undefined )) {
-        console.log("Token Not FOUND")
-      }else {
+      if (
+        d.token == null ||
+        d.token == undefined ||
+        d.token == "" ||
+        d.userData == null ||
+        d.userData == undefined
+      ) {
+        console.log("Token Not FOUND");
+      } else {
         fetch("https://new-app.datatera.io/api/v1/conversion/uploadFileToDb", {
           method: "POST",
           headers: {
-            "Authorization": "Bear " + d.token,
+            Authorization: "Bearer " + d.token,
           },
-          body: formData
-        }).then(res => res.json()).then(resp => console.log(resp)); 
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((resp) => console.log(resp));
       }
     });
 
-   
     // $.ajax({
     //   type: "POST",
     //   url: "https://new-app.datatera.io/api/v1/conversion/uploadFileToDb",

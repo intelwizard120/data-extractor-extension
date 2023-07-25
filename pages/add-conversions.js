@@ -19,7 +19,7 @@ document
           type: "POST",
           url: "https://new-app.datatera.io/api/v1/conversion",
           Headers: {
-            Authorization: "Bear " + d.token,
+            Authorization: "Bearer " + d.token,
           },
           data: JSON.stringify({
             name: dataName,
@@ -38,7 +38,7 @@ document
               type: "POST",
               url: "https://new-app.datatera.io/api/v1/conversion/addData",
               Headers: {
-                Authorization: "Bear " + d.token,
+                Authorization: "Bearer " + d.token,
               },
               data: JSON.stringify(csvFileObject),
               dataType: "json",

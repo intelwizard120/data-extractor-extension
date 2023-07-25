@@ -17,7 +17,7 @@ $(document).ready(() => {
         type: "GET",
         dataType: "json",
         Headers: {
-          Authorization: "Bear " + d.token,
+          Authorization: "Bearer " + d.token,
         },
         success: function (res) {
           let conversionList = res.getAllConversion;

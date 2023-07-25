@@ -47,7 +47,7 @@ const uploadFileToDb = (data, type) => {
       fetch("http://localhost:5000/api/v1/conversion/uploadFileToDb", {
         method: "POST",
         headers: {
-          Authorization: "Bear " + d.token,
+          Authorization: "Bearer " + d.token,
         },
         body: formData,
       })
@@ -90,7 +90,7 @@ $(document).ready(() => {
   //             type: "GET",
   //             dataType: "json",
   //             Headers: {
-  //                 "Authorization": "Bear " + d.token
+  //                 "Authorization": "Bearer " + d.token
   //             },
   //             success: function (res) {
   //                 console.log(res);
@@ -122,7 +122,7 @@ document
         message: "inject",
         tabData: JSON.stringify(tab),
       });
-      window.close();
+      // window.close();
     });
   });
 
