@@ -19,64 +19,44 @@ const uploadFileToDb = (data, type, selectedFile) => {
   let returnRowsLimitValue = document.getElementById("returnRowsLimit").value;
 
   let model = document.getElementById("model").value;
-
-  let formData = new FormData();
+  let file;
   if (type === "file") {
-    formData.append("file", selectedFile);
+    file = selectedFile;
   } else {
-    const file = new File([data], " ", {
+    file = new File([data], " ", {
       type: type === "text" ? "text/plain" : "text/html",
     });
-    formData.append("file", file);
   }
-  formData.append("processUrls", `${textCheckBox ? true : false}`);
-  formData.append("id", conversionId);
-  formData.append(
-    "returnRowsLimit",
-    `${returnRowsLimitValue ? returnRowsLimitValue : null}`
-  );
-  formData.append("merge", `${mergeCheckBox ? true : false}`);
 
-  formData.append("model", `${model ? model : null}`);
+  const fileURL = URL.createObjectURL(file);
 
-  chrome.storage.local.get(["token", "userData"], (d) => {
-    if (
-      d.token == null ||
-      d.token == undefined ||
-      d.token == "" ||
-      d.userData == null ||
-      d.userData == undefined
-    ) {
-      console.log("Token Not FOUND");
-    } else {
-      //"http://new-app.datatera.io/v1/conversion/uploadFileToDb"
-      //"http://localhost:5000/api/v1/conversion/uploadFileToDb"
-      fetch("http://localhost:5000/api/v1/conversion/uploadFileToDb", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + d.token,
-        },
-        body: formData,
-      })
-        .then((res) => res.json())
-        .then((resp) => {
-          var loaderElement = document.querySelector(".loader");
-          loaderElement.style.display = "none";
+  chrome.runtime.sendMessage(
+    {
+      message: "uploadFileToDB",
+      model: model,
+      returnRowsLimitValue: returnRowsLimitValue,
+      mergeCheckBox: mergeCheckBox,
+      textCheckBox: textCheckBox,
+      fileURL: fileURL, // Send the temporary URL of the file
+      conversionId: conversionId,
+    },
+    function (response) {
+      // This callback function will be called when a response is received
+      console.log("Received response from background script:", response);
+      if (response?.message === "success") {
+        console.log("hello");
+        var loaderElement = document.querySelector(".loader");
+        loaderElement.style.display = "none";
 
-          if (Array.isArray(resp) && resp?.length === 0) {
-            window.location.href =
-              "/pages/no-new-data-recognized.html?id=" + conversionId;
-          } else {
-            window.location.href =
-              "/pages/success-page.html?id=" + conversionId;
-          }
-        })
-        .catch((e) => {
-          var loaderElement = document.querySelector(".loader");
-          loaderElement.style.display = "none";
-        });
+        if (response?.args && response?.args?.length === 0) {
+          window.location.href =
+            "/pages/no-new-data-recognized.html?id=" + conversionId;
+        } else {
+          window.location.href = "/pages/success-page.html?id=" + conversionId;
+        }
+      }
     }
-  });
+  );
 };
 
 $(document).ready(() => {
@@ -213,14 +193,3 @@ document.getElementById("highlight-action").addEventListener("click", () => {
       .catch();
   });
 });
-
-// document.getElementById("upload_txt").addEventListener("submit", (e) => {
-//   let textInput = document.getElementById("text_data").value;
-
-//   const file = new File([textInput], "text.txt", {
-//     type: "text/plain",
-//   });
-
-//   console.log(textInput);
-//   uploadFileToDb("", "file", file);
-// });

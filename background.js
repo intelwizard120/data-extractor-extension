@@ -57,6 +57,7 @@ chrome.storage.sync.get((config) => {
   // })
 });
 function inject(tab) {
+  console.log("inside inject");
   chrome.tabs.sendMessage(
     tab.id,
     {
@@ -68,6 +69,7 @@ function inject(tab) {
       }
     }
   );
+
   var timeout = setTimeout(() => {
     chrome.scripting.insertCSS({
       files: ["assets/vendor/jquery.Jcrop.min.css"],
@@ -127,6 +129,7 @@ function inject(tab) {
 // })
 chrome.runtime.onMessage.addListener((req, sender, res) => {
   if (req.message === "capture") {
+    console.log("capture");
     chrome.storage.sync.get((config) => {
       chrome.tabs.query(
         {
@@ -214,7 +217,6 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
   } else if (req.message == "inject") {
     console.log("Inject Message");
     let tab = JSON.parse(req.tabData);
-    console.log(tab);
 
     // Get the popup window.
     // const popup = chrome.windows.get({
@@ -235,6 +237,68 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         });
       });
     }, 3000);
+  } else if (req.message === "uploadFileToDB") {
+    // console.log(req.file);
+
+    fetch(req.fileURL)
+      .then((response) => response.blob())
+      .then((file) => {
+        // Now you have the file object, and you can use it as needed
+        // console.log("Received file in background script:", file);
+        let formData = new FormData();
+
+        formData.append("file", file);
+        formData.append("processUrls", `${req?.textCheckBox ? true : false}`);
+        formData.append("id", req?.conversionId);
+        formData.append(
+          "returnRowsLimit",
+          `${req?.returnRowsLimitValue ? req?.returnRowsLimitValue : null}`
+        );
+        formData.append("merge", `${req?.mergeCheckBox ? true : false}`);
+        formData.append("model", `${req?.model ? req?.model : null}`);
+
+        chrome.storage.local.get(["token", "userData"], (d) => {
+          if (
+            d.token == null ||
+            d.token == undefined ||
+            d.token == "" ||
+            d.userData == null ||
+            d.userData == undefined
+          ) {
+            console.log("Token Not FOUND");
+          } else {
+            //"http://new-app.datatera.io/v1/conversion/uploadFileToDb"
+            //"http://localhost:5000/api/v1/conversion/uploadFileToDb"
+            fetch("http://localhost:5000/api/v1/conversion/uploadFileToDb", {
+              method: "POST",
+              headers: {
+                Authorization: "Bearer " + d.token,
+              },
+              body: formData,
+            })
+              .then((res) => res.json())
+              .then((resp) => {
+                res({
+                  message: "success",
+                  args: resp,
+                });
+              });
+            // .catch((e) => {
+            //   res({
+            //     message: "error",
+            //     args: e,
+            //   });
+            // });
+          }
+        });
+        URL.revokeObjectURL(req.fileURL);
+      })
+      .catch((error) => {
+        // res({
+        //   message: "error",
+        //   args: error,
+        // });
+      });
   }
   return true;
 });
