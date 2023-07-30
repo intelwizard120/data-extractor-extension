@@ -129,7 +129,6 @@ function inject(tab) {
 // })
 chrome.runtime.onMessage.addListener((req, sender, res) => {
   if (req.message === "capture") {
-    console.log("capture");
     chrome.storage.sync.get((config) => {
       chrome.tabs.query(
         {
@@ -144,19 +143,26 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
             },
             (image) => {
               // image is base64
+              console.log("1");
               if (config.method === "view") {
                 if (req.dpr !== 1 && !config.dpr) {
+                  console.log("2");
+
                   res({
                     message: "image",
                     args: [image, req.area, req.dpr, config.dpr, config.format],
                   });
                 } else {
+                  console.log("3");
+
                   res({
                     message: "image",
                     image,
                   });
                 }
               } else {
+                console.log("4");
+
                 res({
                   message: "image",
                   args: [image, req.area, req.dpr, config.dpr, config.format],

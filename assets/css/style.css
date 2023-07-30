@@ -346,6 +346,7 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: white;
 }
 
 .flex-center {
@@ -415,7 +416,9 @@ a {
 }
 
 .tera-create-btn {
-  margin-top: 24px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
   background: #4aa181;
   border-radius: 10px;
   width: 279px;

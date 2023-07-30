@@ -252,10 +252,9 @@ window.addEventListener(
 );
 
 chrome.runtime.onMessage.addListener((req, sender, res) => {
-  console.log("init");
-
   if (req.message === "init") {
     res({}); // prevent re-injecting
+    console.log("init");
 
     if (!jcrop) {
       image(() =>

@@ -3,6 +3,30 @@ document
   .getElementById("add_conversion_form")
   .addEventListener("submit", (e) => {
     e.preventDefault();
+    const target = event.submitter;
+
+    if (target.id === "paste-from-clipboard") {
+      const input = document.createElement("textarea");
+      input.style.position = "fixed";
+      input.style.opacity = 0;
+      document.body.appendChild(input);
+      input.focus();
+      document.execCommand("paste");
+      const clipboardData = input.value;
+      document.body.removeChild(input);
+      console.log(clipboardData);
+      const file = new File([clipboardData], "", {
+        type: "text/csv",
+      });
+      csvReader(file);
+
+      csvFileObject.csvFileName = "";
+      csvFileObject.csvFileSize = formatFileSize(file.size);
+      csvFileObject.sheetDetailsWrite = {
+        empty: "",
+      };
+      console.log(csvFileObject);
+    }
     chrome.storage.local.get(["token", "userData"], (d) => {
       if (
         d.token == null ||
@@ -44,7 +68,6 @@ document
               dataType: "json",
               contentType: "application/json",
               success: function (result) {
-                console.log(result);
                 window.location.href = "/pages/conversions.html";
               },
             });
@@ -54,6 +77,61 @@ document
     });
   });
 
+// document
+//   .getElementById("paste-from-clipboard")
+//   .addEventListener("click", (e) => {
+//     e.preventDefault();
+//     chrome.storage.local.get(["token", "userData"], (d) => {
+//       if (
+//         d.token == null ||
+//         d.token == undefined ||
+//         d.token == "" ||
+//         d.userData == null ||
+//         d.userData == undefined
+//       ) {
+//         console.log(d.token);
+//         console.log(d.userdata);
+//       } else {
+//         let dataName = $("#cake-sales-data-name").val();
+//         $.ajax({
+//           type: "POST",
+//           url: "https://new-app.datatera.io/api/v1/conversion",
+//           Headers: {
+//             Authorization: "Bearer " + d.token,
+//           },
+//           data: JSON.stringify({
+//             name: dataName,
+//             user: d.userData._id,
+//           }),
+//           dataType: "json",
+//           contentType: "application/json",
+//           success: function (data) {
+//             console.log(data);
+//             console.log("Conversion Added Successfully");
+
+//             csvFileObject.conversion = data.createConversion._id;
+//             csvFileObject.user = data.createConversion.user;
+
+//             $.ajax({
+//               type: "POST",
+//               url: "https://new-app.datatera.io/api/v1/conversion/addData",
+//               Headers: {
+//                 Authorization: "Bearer " + d.token,
+//               },
+//               data: JSON.stringify(csvFileObject),
+//               dataType: "json",
+//               contentType: "application/json",
+//               success: function (result) {
+//                 console.log(result);
+//                 window.location.href = "/pages/conversions.html";
+//               },
+//             });
+//           },
+//         });
+//       }
+//     });
+//   });
+
 //CSV Reader Function will store CSV values in csvArray
 function csvReader(selectedFile) {
   // Create a FileReader instance
@@ -61,22 +139,39 @@ function csvReader(selectedFile) {
 
   // Set up an event handler for when the file reading is complete
   reader.onload = function (event) {
-    // Access the parsed CSV data from the result of the FileReader
     const csvData = event.target.result;
-    // Example: Splitting the CSV data by new lines to get rows
     const rows = csvData.split("\n");
-    // Extract table headers (first row)
     const tableHeaders = rows[0].split(",").map((header) => header.trim());
-    // Extract table data (remaining rows)
+
     const tableData = rows
-      .slice(1)
+      ?.filter((el) => el?.length > 0)
       .map((row) => row.split(",").map((value) => value.trim())); // Trim values
-    // Create an object with tableHeaders and tableData
+
     const csvObject = {
       tableHeaders: tableHeaders,
       tableData: tableData,
     };
-    // Add the csvObject to the csvArray
+    csvArray = [];
+    csvArray.push(csvObject);
+    csvFileObject.data = csvArray;
+  };
+  reader.readAsText(selectedFile);
+}
+function csvReader2(selectedFile) {
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    const csvData = event.target.result;
+    const rows = csvData.split("\n");
+    const tableHeaders = rows[0].split(",").map((header) => header.trim());
+    const tableData = rows
+      .slice(1)
+      .map((row) => row.split(",").map((value) => value.trim())); // Trim values
+
+    console.log(tableData);
+    const csvObject = {
+      tableHeaders: tableHeaders,
+      tableData: tableData,
+    };
     csvArray = [];
     csvArray.push(csvObject);
     // Print the populated csvArray
@@ -85,7 +180,6 @@ function csvReader(selectedFile) {
   };
   reader.readAsText(selectedFile);
 }
-
 document
   .getElementById("tera-csv-upload-btn")
   .addEventListener("click", (e) => {

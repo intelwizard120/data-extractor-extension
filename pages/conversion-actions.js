@@ -105,10 +105,15 @@ document
   .addEventListener("click", (e) => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       var tab = tabs[0];
-      chrome.runtime.sendMessage({
-        message: "inject",
-        tabData: JSON.stringify(tab),
-      });
+      chrome.runtime.sendMessage(
+        {
+          message: "inject",
+          tabData: JSON.stringify(tab),
+        },
+        function (response) {
+          console.log("response:", response);
+        }
+      );
       // window.close();
     });
   });
@@ -193,3 +198,17 @@ document.getElementById("highlight-action").addEventListener("click", () => {
       .catch();
   });
 });
+
+// Function to handle reading data from the clipboard
+function readClipboardData() {
+  e.preventDefault();
+  const input = document.createElement("input");
+  input.style.position = "fixed";
+  input.style.opacity = 0;
+  document.body.appendChild(input);
+  input.focus();
+  document.execCommand("paste");
+  const clipboardData = input.value;
+  document.body.removeChild(input);
+  console.log(clipboardData);
+}
