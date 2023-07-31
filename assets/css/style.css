@@ -192,6 +192,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: -20px;
 }
 
 .tera-welcome-top img {
@@ -622,4 +623,18 @@ a {
 .options-text {
   color: #44444f;
   font-family: "Inter";
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.header b {
+  font-size: 13px;
+  color: #92929d;
+}
+.header b:hover {
+  color: #4aa181;
 }
