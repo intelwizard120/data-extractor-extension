@@ -178,9 +178,11 @@ const uploadFileToDb = (data, type, selectedFile) => {
           loaderElement.style.display = "none";
 
           if (Array.isArray(resp) && resp?.length === 0) {
+            localStorage.setItem("viewData", JSON.stringify([]));
             window.location.href =
               "/pages/no-new-data-recognized.html?id=" + conversionId;
           } else {
+            localStorage.setItem("viewData", JSON.stringify(resp));
             window.location.href =
               "/pages/success-page.html?id=" + conversionId;
           }

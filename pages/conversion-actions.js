@@ -44,14 +44,16 @@ const uploadFileToDb = (data, type, selectedFile) => {
       // This callback function will be called when a response is received
       console.log("Received response from background script:", response);
       if (response?.message === "success") {
-        console.log("hello");
         var loaderElement = document.querySelector(".loader");
         loaderElement.style.display = "none";
 
         if (response?.args && response?.args?.length === 0) {
+          localStorage.setItem("viewData", JSON.stringify([]));
           window.location.href =
             "/pages/no-new-data-recognized.html?id=" + conversionId;
+        } else if (response?.args?.status) {
         } else {
+          localStorage.setItem("viewData", JSON.stringify(response?.args));
           window.location.href = "/pages/success-page.html?id=" + conversionId;
         }
       }

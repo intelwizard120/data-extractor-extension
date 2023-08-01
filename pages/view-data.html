@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datatera Popup</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        .tera-container {
+            height: 500px;
+        }
+        #tableContainer {
+            width: 100%;
+            height: 350px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+        }
+        th {
+            border: 1px solid #92929D;
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 11px;
+            color: #44444F;
+        }
+        .converted-data-td1 {
+            border: 1px solid #92929D;
+            padding: 8px;
+            text-align: left;
+            color: #92929D;
+        }
+        .converted-data-td2 {
+            border: 1px solid #92929D;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tera-container">
+        <div class="header">
+            <a href="./conversions.html" id="back-btn" class="bk a-left"><b>&#x2190; Back</b></a>
+            <a href="#" id="logout-btn" class="lg a-right"><b>Logout</b></a>
+        </div>
+        <section class="tera-welcome-top">
+            <img src="/assets/images/logo.png" alt="">
+            <h1 id="success-heading"></h1>
+        </section>
+        <div id="tableContainer">
+        </div>
+        <div class="view-data-btns">
+            <a href="/pages/view-data.html" id="openInApp" class="tera-action-btn-sm" style="background-color: #4AA181; color: white;">
+                Open in App
+            </a>
+            <a class="tera-action-btn-sm"  id="exportData"  style="background-color: #4AA181; color: white;cursor: pointer;">
+                Export Data
+            </a>
+        </div>
+    </div>
+    <script src="../assets/content/xlsx.full.min.js"></script>
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="./logout.js"></script>
+
+    <script src="./view-data.js"></script>
+</body>
+
+</html>

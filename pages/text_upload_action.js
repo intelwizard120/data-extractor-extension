@@ -53,9 +53,11 @@ document
           loaderElement.style.display = "none";
 
           if (response?.args && response?.args?.length === 0) {
+            localStorage.setItem("viewData", JSON.stringify([]));
             window.location.href =
               "/pages/no-new-data-recognized.html?id=" + conversionId;
           } else {
+            localStorage.setItem("viewData", JSON.stringify(response?.args));
             window.location.href =
               "/pages/success-page.html?id=" + conversionId;
           }

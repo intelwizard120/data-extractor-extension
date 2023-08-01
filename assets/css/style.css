@@ -638,3 +638,22 @@ a {
 .header b:hover {
   color: #4aa181;
 }
+
+.view-data-btns {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 5px;
+}
+
+.tera-action-btn-sm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 132px;
+  height: 47px;
+  background: #f1f1f5;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  color: #44444f;
+  margin-left: 10px;
+}
