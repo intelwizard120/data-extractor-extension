@@ -68,38 +68,6 @@ $(document).ready(() => {
   $("#text_upload_btn").click((e) => {
     window.location.href = "/pages/text_upload_action.html?id=" + conversionId;
   });
-
-  // chrome.storage.local.get(["token", "userData"], (d) => {
-  //     if((d.token == null || d.token == undefined ||  d.token =="") || (d.userData == null || d.userData == undefined )) {
-  //     console.log(d.token);
-  //     console.log(d.userdata)
-  //     }else {
-  //         $.ajax({
-  //             url: "https://new-app.datatera.io/api/v1/conversion/getData/" + conversionId,
-  //             type: "GET",
-  //             dataType: "json",
-  //             Headers: {
-  //                 "Authorization": "Bearer " + d.token
-  //             },
-  //             success: function (res) {
-  //                 console.log(res);
-
-  //                 let tableData = res.data[0].tableData;
-  //                 let tableHeaders = res.data[0].tableHeaders;
-  //                 let columnRows = '<tr>';
-  //                 tableHeaders.forEach(item => columnRows += `<td>${item}</td>`);
-  //                 columnRows += "</tr>";
-  //                 $("#table-columns").html(columnRows)
-
-  //                 let dataRows = "";
-  //                 tableData.forEach(item => dataRows += `<tr>
-  //                 <td>${item[0]}</td><td>${item[1]}</td><td>${item[2]}</td><td>${item[3]}</td><td>${item[4]}</td><td>${item[5]}</td><td>${item[6]}</td><td>${item[7]}</td><td>${item[8]}</td><td>${item[9]}</td><td>${item[10]}</td></tr>`);
-  //                 $("#table-rows").html(dataRows);
-
-  //             }
-  //         })
-  //     }
-  // })
 });
 
 document
@@ -214,3 +182,7 @@ function readClipboardData() {
   document.body.removeChild(input);
   console.log(clipboardData);
 }
+
+document.getElementById("reloadCsv").addEventListener("click", (e) => {
+  window.location.href = "./reloadModal.html?id=" + conversionId;
+});

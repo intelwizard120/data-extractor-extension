@@ -1,3 +1,7 @@
+let search = location.search.substring(1);
+search = search.split("=");
+let conversionId = search[1];
+
 $(document).ready(() => {
   chrome.storage.local.get(["token", "userData"], (d) => {
     if (
@@ -49,6 +53,22 @@ $(document).ready(() => {
 function saveToLocalStorage(item) {
   // Save the item to local storage
   localStorage.setItem("selectedItem", JSON.stringify(item));
-  // Redirect to the desired page
-  window.location.href = "./conversion-actions.html?id=" + item?._id;
+
+  chrome.runtime.sendMessage(
+    {
+      message: "getData",
+      conversionId: item?._id,
+    },
+    function (response) {
+      if (response?.message === "success") {
+        console.log(response);
+        if (response?.args === null) {
+          window.location.href = "./add-conversions.html";
+        } else {
+          // Redirect to the desired page
+          window.location.href = "./conversion-actions.html?id=" + item?._id;
+        }
+      }
+    }
+  );
 }

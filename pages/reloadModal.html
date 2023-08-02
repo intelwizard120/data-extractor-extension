@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datatera Popup</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <style>
+        .tera-container {
+            height: 400px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tera-container">
+        <div class="header">
+            <a href="./conversions.html" id="back-btn" class="bk a-left"><b>&#x2190; Back</b></a>
+            <a href="#" id="logout-btn" class="lg a-right"><b>Logout</b></a>
+        </div>
+        <section class="tera-welcome-top">
+            <img src="/assets/images/logo.png" alt="">
+            <h1 id="success-heading"></h1>
+        </section>
+        <div style="height: 100%; display: flex; flex-direction: column; align-items: center; background: white; text-align: center;justify-content: space-between;">
+            <h2 style="color: #4AA181; margin: 10px;margin-top: 120px;">Are you sure? After reboot all data will be cleared</h2>
+            <div id="reload" class="tera-action-btn" style="background-color: #4AA181; color: white;">
+                Reload
+            </div>
+        </div>
+          
+    </div>
+
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="./logout.js"></script>
+
+    <script src="./reloadModal.js"></script>
+</body>
+
+</html>

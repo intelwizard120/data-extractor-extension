@@ -244,8 +244,6 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       });
     }, 3000);
   } else if (req.message === "uploadFileToDB") {
-    // console.log(req.file);
-
     fetch(req.fileURL)
       .then((response) => response.blob())
       .then((file) => {
@@ -305,6 +303,66 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         //   args: error,
         // });
       });
+  } else if (req.message === "delete") {
+    console.log(req?.conversionId);
+
+    chrome.storage.local.get(["token", "userData"], (d) => {
+      if (
+        d.token == null ||
+        d.token == undefined ||
+        d.token == "" ||
+        d.userData == null ||
+        d.userData == undefined
+      ) {
+        console.log("Token Not FOUND");
+      } else {
+        fetch(
+          `https://new-app.datatera.io/api/v1/conversion/delData/${req?.conversionId}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer " + d.token,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((resp) => {
+            res({
+              message: "success",
+              args: resp,
+            });
+          });
+      }
+    });
+  } else if (req.message === "getData") {
+    chrome.storage.local.get(["token", "userData"], (d) => {
+      if (
+        d.token == null ||
+        d.token == undefined ||
+        d.token == "" ||
+        d.userData == null ||
+        d.userData == undefined
+      ) {
+        console.log("Token Not FOUND");
+      } else {
+        fetch(
+          `https://new-app.datatera.io/api/v1/conversion/getData/${req?.conversionId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + d.token,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then((resp) => {
+            res({
+              message: "success",
+              args: resp,
+            });
+          });
+      }
+    });
   }
   return true;
 });
