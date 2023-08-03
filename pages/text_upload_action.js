@@ -56,7 +56,7 @@ document
             localStorage.setItem("viewData", JSON.stringify([]));
             window.location.href =
               "/pages/no-new-data-recognized.html?id=" + conversionId;
-          } else {
+          } else if (response?.status === 200) {
             localStorage.setItem("viewData", JSON.stringify(response?.args));
             window.location.href =
               "/pages/success-page.html?id=" + conversionId;

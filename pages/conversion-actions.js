@@ -52,7 +52,7 @@ const uploadFileToDb = (data, type, selectedFile) => {
           window.location.href =
             "/pages/no-new-data-recognized.html?id=" + conversionId;
         } else if (response?.args?.status) {
-        } else {
+        } else if (response?.status === 200) {
           localStorage.setItem("viewData", JSON.stringify(response?.args));
           window.location.href = "/pages/success-page.html?id=" + conversionId;
         }

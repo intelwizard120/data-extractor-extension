@@ -279,14 +279,18 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
                 Authorization: "Bearer " + d.token,
               },
               body: formData,
-            })
-              .then((res) => res.json())
-              .then((resp) => {
+            }).then((response) => {
+              return response.json().then((resp) => {
                 res({
                   message: "success",
                   args: resp,
+                  status: response.status,
                 });
               });
+            });
+            // .then((resp) => {
+
+            // });
             // .catch((e) => {
             //   res({
             //     message: "error",
