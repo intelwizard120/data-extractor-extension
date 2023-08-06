@@ -207,6 +207,9 @@ document
       };
 
       console.log(csvFileObject);
+      if (csvFileObject !== {}) {
+        document.getElementById("CreateBtn").click();
+      }
     });
   });
 
