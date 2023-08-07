@@ -96,6 +96,12 @@ function inject(tab) {
       },
     });
     chrome.scripting.executeScript({
+      files: ["assets/vendor/notify.min.js"],
+      target: {
+        tabId: tab.id,
+      },
+    });
+    chrome.scripting.executeScript({
       files: ["assets/content/crop.js"],
       target: {
         tabId: tab.id,
@@ -370,3 +376,53 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
   }
   return true;
 });
+
+
+// Image Upload
+chrome.runtime.onMessage.addListener((req, sender, res) => {
+  if (req.message == "image-upload") {
+    imageUpload(req.image, req.fileName);
+  }
+});
+
+function imageUpload(image, fileName) {
+  var [header, base64] = image.split(",");
+  var [_, type] = /data:(.*);base64/.exec(header);
+  var binary = atob(base64);
+  var array = new Uint8Array(
+    Array.from({ length: binary.length }, (_, index) =>
+      binary.charCodeAt(index)
+    )
+  );
+
+  const file = new File([array], fileName, { type });
+
+  chrome.storage.local.get(["token", "userData", "conversionId"], (d) => {
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("id", d.conversionId);
+
+    if (
+      d.token == null ||
+      d.token == undefined ||
+      d.token == "" ||
+      d.userData == null ||
+      d.userData == undefined ||
+      d.conversionId == null ||
+      d.conversionId == undefined
+    ) {
+      console.log("Image Upload: Missing Form Data");
+    } else {
+      fetch("https://new-app.datatera.io/api/v1/conversion/uploadFileToDb", {
+        method: "POST",
+        headers: {
+          Authorization: "Bear " + d.token,
+        },
+        body: formData,
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((resp) => console.log(resp));
+    }
+  });
+}

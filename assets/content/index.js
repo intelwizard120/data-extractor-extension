@@ -116,6 +116,17 @@ var filename = (format) => {
   return `Screenshot Capture - ${timestamp(new Date())}.${ext(format)}`;
 };
 
+var save = async (image, format, save) => {
+  if (save === "file") {
+    let fileName = filename(format);
+    chrome.runtime.sendMessage({ message: "image-upload", image, fileName });
+    $.notify("Image uploaded successfully!", {
+      className: "success",
+      globalPosition: "top right",
+    });
+  }
+};
+
 const uploadFileToDb = (data, type, selectedFile) => {
   let textCheckBox = false;
   if (document.getElementById("processURLs").checked) {
