@@ -10,7 +10,9 @@ document.getElementById("reload").addEventListener("click", (e) => {
     },
     function (response) {
       console.log("Received response from background script:", response);
+
       if (response?.message === "success" && !response?.args?.status) {
+        localStorage.setItem("typeNav", JSON.stringify(true));
         window.location.href = "/pages/add-conversions.html";
       }
     }

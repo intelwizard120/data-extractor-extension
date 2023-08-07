@@ -52,6 +52,7 @@ $(document).ready(() => {
 
 function saveToLocalStorage(item) {
   // Save the item to local storage
+  console.log(item);
   localStorage.setItem("selectedItem", JSON.stringify(item));
 
   chrome.runtime.sendMessage(
@@ -63,6 +64,8 @@ function saveToLocalStorage(item) {
       if (response?.message === "success") {
         console.log(response);
         if (response?.args === null) {
+          localStorage.setItem("typeNav", JSON.stringify(true));
+
           window.location.href = "./add-conversions.html";
         } else {
           // Redirect to the desired page
@@ -72,3 +75,8 @@ function saveToLocalStorage(item) {
     }
   );
 }
+
+document.getElementById("addBtn").addEventListener("click", (e) => {
+  localStorage.setItem("typeNav", JSON.stringify(false));
+  window.location.href = "./add-conversions.html";
+});

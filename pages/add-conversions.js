@@ -1,3 +1,13 @@
+$(document).ready(() => {
+  const data = JSON.parse(localStorage.getItem("selectedItem"));
+  const typeNav = JSON.parse(localStorage.getItem("typeNav"));
+
+  if (data?.name && typeNav) {
+    localStorage.setItem("typeNav", JSON.stringify(false));
+    document.getElementById("cake-sales-data-name").value = data?.name;
+  }
+});
+
 var csvFileObject = {};
 document
   .getElementById("add_conversion_form")
