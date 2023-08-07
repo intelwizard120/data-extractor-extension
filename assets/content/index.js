@@ -116,17 +116,6 @@ var filename = (format) => {
   return `Screenshot Capture - ${timestamp(new Date())}.${ext(format)}`;
 };
 
-var save = async (image, format, save) => {
-  if (save === "file") {
-    let fileName = filename(format);
-    chrome.runtime.sendMessage({ message: "image-upload", image, fileName });
-    $.notify("Image uploaded successfully!", {
-      className: "success",
-      globalPosition: "top right",
-    });
-  }
-};
-
 const uploadFileToDb = (data, type, selectedFile) => {
   let textCheckBox = false;
   if (document.getElementById("processURLs").checked) {
@@ -205,21 +194,16 @@ const uploadFileToDb = (data, type, selectedFile) => {
     }
   });
 };
-var save = (image, format, save) => {
-  console.log("save");
 
+var save = async (image, format, save) => {
   if (save === "file") {
-    console.log("file");
-    // chrome.action.openPopup({
-    //   url: '/pages/conversion-actions.html',
-    // });
-    var link = document.createElement("a");
-    link.download = filename(format);
-    link.href = image;
-    link.click();
+    let fileName = filename(format);
+    chrome.runtime.sendMessage({ message: "image-upload", image, fileName });
+    $.notify("Image uploaded successfully!", {
+      className: "success",
+      globalPosition: "top right",
+    });
   } else if (save === "url") {
-    console.log("url");
-
     navigator.clipboard.writeText(image).then(() => {
       alert(
         ["Screenshot Capture:", "Data URL String", "Saved to Clipboard!"].join(
@@ -228,8 +212,6 @@ var save = (image, format, save) => {
       );
     });
   } else if (save === "binary") {
-    console.log("binary");
-
     var [header, base64] = image.split(",");
     var [_, type] = /data:(.*);base64/.exec(header);
     var binary = atob(base64);
