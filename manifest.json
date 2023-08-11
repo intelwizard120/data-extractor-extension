@@ -18,7 +18,10 @@
     "32": "/assets/images/logo.png",
     "16": "/assets/images/logo.png"
   },
-  "permissions": ["storage", "activeTab", "scripting", "identity",  "clipboardRead"],
+  "permissions": [
+  "unlimitedStorage",
+  "file://*/*" ,
+    "management","storage", "activeTab", "scripting", "identity",  "clipboardRead",  "downloads"],
   "web_accessible_resources": [
     {
       "matches": ["<all_urls>"],

@@ -1,8 +1,14 @@
 let search = location.search.substring(1);
 search = search.split("=");
 let conversionId = search[1];
+let baseUrl = "";
 
 $(document).ready(() => {
+  chrome.storage.local.get("baseUrl", (result) => {
+    baseUrl = result.baseUrl;
+    console.log("Retrieved data:", baseUrl);
+  });
+
   chrome.storage.local.get(["token", "userData"], (d) => {
     if (
       d.token == null ||
@@ -15,9 +21,7 @@ $(document).ready(() => {
       console.log(d.userdata);
     } else {
       $.ajax({
-        url:
-          "https://new-app.datatera.io/api/v1/conversion/all-notes/" +
-          d.userData._id,
+        url: `${baseUrl}/api/v1/conversion/all-notes/` + d.userData._id,
         type: "GET",
         dataType: "json",
         Headers: {

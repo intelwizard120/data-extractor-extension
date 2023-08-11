@@ -1,4 +1,6 @@
-chrome.storage.local.get(["userLoggedIn"], (d) => {  
+let baseUrl = "";
+
+chrome.storage.local.get(["userLoggedIn", "baseUrl"], (d) => {
   if (
     d.userLoggedIn == null ||
     d.userLoggedIn == undefined ||
@@ -7,6 +9,10 @@ chrome.storage.local.get(["userLoggedIn"], (d) => {
   } else {
     chrome.action.setPopup({ popup: "/pages/conversions.html" });
     window.location.href = "./conversions.html";
+  }
+  if (d.baseUrl) {
+    baseUrl = d.baseUrl;
+    console.log("Retrieved data:", baseUrl);
   }
 });
 
@@ -19,7 +25,7 @@ $(document).ready(() => {
 
     $.ajax({
       type: "POST",
-      url: "https://new-app.datatera.io/api/v1/user/login",
+      url: `${baseUrl}/api/v1/user/login`,
       data: JSON.stringify({ email: userEmail, password: userPassword }),
       dataType: "json",
       contentType: "application/json",
@@ -45,7 +51,7 @@ $(document).ready(() => {
   });
 });
 
-document.getElementById("google-login-btn").addEventListener("click", (e) => {  
+document.getElementById("google-login-btn").addEventListener("click", (e) => {
   chrome.runtime.sendMessage({ message: "google-login" });
 });
 

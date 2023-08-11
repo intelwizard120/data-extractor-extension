@@ -656,3 +656,26 @@ a {
   color: #44444f;
   margin-left: 10px;
 }
+.max-file {
+  font-size: 14px;
+}
+.display-none {
+  display: none;
+}
+.margin-top-60px {
+  margin-top: 60px;
+}
+.bg-white {
+  background-color: white;
+}
+
+.btn-containers {
+  display: flex;
+  padding-left: 25px;
+}
+.display-flex {
+  display: flex;
+}
+.align-items-center {
+  align-items: center;
+}

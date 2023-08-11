@@ -1,4 +1,11 @@
+let baseUrl = "";
+
 $(document).ready(() => {
+  chrome.storage.local.get("baseUrl", (result) => {
+    baseUrl = result.baseUrl;
+    console.log("Retrieved data:", baseUrl);
+  });
+
   $(document).on("submit", "#register_form", (e) => {
     e.preventDefault();
 
@@ -8,7 +15,7 @@ $(document).ready(() => {
 
     $.ajax({
       type: "POST",
-      url: "https://new-app.datatera.io/api/v1/user/register",
+      url: `${baseUrl}/api/v1/user/register`,
       data: JSON.stringify({
         email: userEmail,
         password: userPassword,
