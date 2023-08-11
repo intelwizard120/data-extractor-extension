@@ -1,3 +1,4 @@
+let baseUrl = "";
 $(document).ready(() => {
   const data = JSON.parse(localStorage.getItem("selectedItem"));
   const typeNav = JSON.parse(localStorage.getItem("typeNav"));
@@ -6,6 +7,10 @@ $(document).ready(() => {
     localStorage.setItem("typeNav", JSON.stringify(false));
     document.getElementById("cake-sales-data-name").value = data?.name;
   }
+  chrome.storage.local.get("baseUrl", (result) => {
+    baseUrl = result.baseUrl;
+    console.log("Retrieved data:", baseUrl);
+  });
 });
 
 var csvFileObject = {};
@@ -51,7 +56,7 @@ document
         let dataName = $("#cake-sales-data-name").val();
         $.ajax({
           type: "POST",
-          url: "https://new-app.datatera.io/api/v1/conversion",
+          url: `${baseUrl}/api/v1/conversion`,
           Headers: {
             Authorization: "Bearer " + d.token,
           },
@@ -62,15 +67,12 @@ document
           dataType: "json",
           contentType: "application/json",
           success: function (data) {
-            console.log(data);
-            console.log("Conversion Added Successfully");
-
             csvFileObject.conversion = data.createConversion._id;
             csvFileObject.user = data.createConversion.user;
 
             $.ajax({
               type: "POST",
-              url: "https://new-app.datatera.io/api/v1/conversion/addData",
+              url: `${baseUrl}/api/v1/conversion/addData`,
               Headers: {
                 Authorization: "Bearer " + d.token,
               },

@@ -1,4 +1,9 @@
 import "./firebase.js";
+let baseUrl = "";
+chrome.storage.local.get("baseUrl", (result) => {
+  baseUrl = result.baseUrl;
+  console.log("Retrieved data:", baseUrl);
+});
 
 function initFirebase() {
   const config = {
@@ -24,7 +29,7 @@ function googleLogout() {
   firebase
     .auth()
     .signOut()
-    .then(() => {      
+    .then(() => {
       chrome.identity.clearAllCachedAuthTokens();
     })
     .catch((err) => console.log(err));
@@ -51,7 +56,7 @@ function googleLogin() {
 }
 
 function requestGoogleLogin(body) {
-  fetch("https://new-app.datatera.io/api/v1/user/googleSignin", {
+  fetch(`${baseUrl}/api/v1/user/googleSignin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

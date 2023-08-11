@@ -1,4 +1,22 @@
 import "./google.js";
+// https://new-app.datatera.io
+// http://localhost:5000
+let baseUrl = "";
+// Assuming your JSON file is in the 'data' folder and named 'data.json'
+const jsonFilePath = chrome.runtime.getURL("data/config.json");
+
+fetch(jsonFilePath)
+  .then((response) => response.json())
+  .then((data) => {
+    baseUrl = data.url;
+    console.log(baseUrl);
+    chrome.storage.local.set({ baseUrl: baseUrl }, () => {
+      console.log("Data saved to storage");
+    });
+  })
+  .catch((error) => {
+    console.error("Error loading JSON:", error);
+  });
 
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function (details) {
@@ -279,7 +297,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
           } else {
             //"http://new-app.datatera.io/v1/conversion/uploadFileToDb"
             //"http://localhost:5000/api/v1/conversion/uploadFileToDb"
-            fetch("http://localhost:5000/api/v1/conversion/uploadFileToDb", {
+            fetch(`${baseUrl}/api/v1/conversion/uploadFileToDb`, {
               method: "POST",
               headers: {
                 Authorization: "Bearer " + d.token,
@@ -326,15 +344,12 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       ) {
         console.log("Token Not FOUND");
       } else {
-        fetch(
-          `https://new-app.datatera.io/api/v1/conversion/delData/${req?.conversionId}`,
-          {
-            method: "DELETE",
-            headers: {
-              Authorization: "Bearer " + d.token,
-            },
-          }
-        )
+        fetch(`${baseUrl}/api/v1/conversion/delData/${req?.conversionId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: "Bearer " + d.token,
+          },
+        })
           .then((res) => res.json())
           .then((resp) => {
             res({
@@ -355,15 +370,12 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       ) {
         console.log("Token Not FOUND");
       } else {
-        fetch(
-          `https://new-app.datatera.io/api/v1/conversion/getData/${req?.conversionId}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: "Bearer " + d.token,
-            },
-          }
-        )
+        fetch(`${baseUrl}/api/v1/conversion/getData/${req?.conversionId}`, {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + d.token,
+          },
+        })
           .then((res) => res.json())
           .then((resp) => {
             res({
@@ -376,7 +388,6 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
   }
   return true;
 });
-
 
 // Image Upload
 chrome.runtime.onMessage.addListener((req, sender, res) => {
@@ -413,7 +424,7 @@ function imageUpload(image, fileName) {
     ) {
       console.log("Image Upload: Missing Form Data");
     } else {
-      fetch("https://new-app.datatera.io/api/v1/conversion/uploadFileToDb", {
+      fetch(`${baseUrl}/api/v1/conversion/uploadFileToDb`, {
         method: "POST",
         headers: {
           Authorization: "Bear " + d.token,

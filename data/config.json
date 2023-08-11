@@ -1,0 +1,7 @@
+{
+    "url":  "http://localhost:5000",
+    "examples":[
+        "https://new-app.datatera.io",
+        "http://localhost:5000"
+    ]
+}
