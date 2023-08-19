@@ -56,7 +56,7 @@ function googleLogin() {
 }
 
 function requestGoogleLogin(body) {
-  fetch(`${baseUrl}/api/v1/user/googleSignin`, {
+  fetch(`${baseUrl}/v1/user/googleSignin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

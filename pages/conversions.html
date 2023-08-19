@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Datatera Popup</title>
-    <link rel="stylesheet" href="/assets/css/style.css" />
-  </head>
 
-  <body>
-    <div class="tera-container" style="padding-bottom: 10px;">
-     
-      <div class="header">
-        <div></div>
-        <a href="#" id="logout-btn" class="lg a-right"><b>Logout</b></a>
-      </div>
-      <section class="tera-welcome-top">
-        <img src="/assets/images/logo.png" alt="" />
-        <h1>Welcome back!</h1>
-        <p>Create a new conversion or select an existing one</p>
-      </section>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datatera Popup</title>
+  <link rel="stylesheet" href="/assets/css/style.css" />
+</head>
 
-      <section class="tera-conversion-list" id="tera-conversion-list"></section>
-      <a id='addBtn' class="tera-conversion-btn" style="margin-top: 5px">
-        <img src="/assets/images/plus.png" />
-        <div>New Conversion</div>
-      </a>
+<body>
+  <div class="tera-container" style="padding-bottom: 10px;">
+
+    <div class="header">
+      <div></div>
+      <a href="#" id="logout-btn" class="lg a-right"><b>Logout</b></a>
+    </div>
+    <section class="tera-welcome-top">
+      <img src="/assets/images/logo.png" alt="" />
+      <h1>Welcome back!</h1>
+      <p>Create a new conversion or select an existing one</p>
+    </section>
+
+    <div class="uploads-info">
+      Remaining uploads: <span>0/0</span>
     </div>
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="./logout.js"></script>
+    <section class="tera-conversion-list" id="tera-conversion-list"></section>
+    <a id='addBtn' class="tera-conversion-btn" style="margin-top: 5px">
+      <img src="/assets/images/plus.png" />
+      <div>New Conversion</div>
+    </a>
+  </div>
 
-    <script src="conversions.js"></script>
-  </body>
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="./logout.js"></script>
+  <script src="conversions.js" type="module"></script>
+</body>
+
 </html>

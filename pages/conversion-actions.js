@@ -2,7 +2,10 @@ let search = location.search.substring(1);
 search = search.split("=");
 let conversionId = search[1];
 
-const uploadFileToDb = (data, type, selectedFile) => {
+const uploadFileToDb = async (data, type, selectedFile) => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let sourceUrl = tab.url;
+
   let textCheckBox = false;
   if (document.getElementById("processURLs").checked) {
     textCheckBox = true;
@@ -39,6 +42,7 @@ const uploadFileToDb = (data, type, selectedFile) => {
       textCheckBox: textCheckBox,
       fileURL: fileURL, // Send the temporary URL of the file
       conversionId: conversionId,
+      sourceUrl,
     },
     function (response) {
       // This callback function will be called when a response is received
@@ -61,7 +65,10 @@ const uploadFileToDb = (data, type, selectedFile) => {
   );
 };
 
-$(document).ready(() => {
+$(document).ready(async () => {
+  
+  await showUploadsInfo();
+
   let search = location.search.substring(1);
   search = search.split("=");
   let conversionId = search[1];
@@ -103,6 +110,7 @@ $(document).ready(() => {
 document
   .getElementById("screenshot_area_btn")
   .addEventListener("click", (e) => {
+    saveUploadParams();
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       var tab = tabs[0];
       chrome.runtime.sendMessage({
@@ -110,8 +118,8 @@ document
         tabData: JSON.stringify(tab),
       });
       window.close();
+    });
   });
-});
 
 document
   .getElementById("upload_whole_page_btn")
@@ -211,3 +219,29 @@ function readClipboardData() {
 document.getElementById("reloadCsv").addEventListener("click", (e) => {
   window.location.href = "./reloadModal.html?id=" + conversionId;
 });
+
+async function saveUploadParams() {
+  let processUrls = document.getElementById("processURLs").checked;
+  let merge = document.getElementById("smartMerge").checked;
+  let returnRowsLimit = document.getElementById("returnRowsLimit").value;
+  let model = document.getElementById("model").value;
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let sourceUrl = tab.url;
+
+  const data = {
+    processUrls,
+    merge,
+    returnRowsLimit,
+    model,
+    sourceUrl,
+  };
+  chrome.storage.local.set({ uploadParams: data });
+}
+
+async function showUploadsInfo() {
+  const { uploadsInfo } = await chrome.storage.local.get("uploadsInfo");
+  const { remainingUploads, totalUploads } = uploadsInfo;  
+  document.querySelector(
+    ".uploads-info span"
+  ).innerText = `${remainingUploads}/${totalUploads}`;
+}

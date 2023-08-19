@@ -21,7 +21,9 @@ fetch(jsonFilePath)
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason == "install") {
-    chrome.storage.local.set({ token: "", userLoggedIn: false });
+    chrome.storage.local.clear(() => {
+      chrome.storage.local.set({ token: "", userLoggedIn: false });
+    });
   } else if (details.reason == "update") {
     var thisVersion = chrome.runtime.getManifest().version;
     console.log(
@@ -276,8 +278,9 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         let formData = new FormData();
 
         formData.append("file", file);
-        formData.append("processUrls", `${req?.textCheckBox ? true : false}`);
         formData.append("id", req?.conversionId);
+        formData.append("sourceUrl", req?.sourceUrl);
+        formData.append("processUrls", `${req?.textCheckBox ? true : false}`);
         formData.append(
           "returnRowsLimit",
           `${req?.returnRowsLimitValue ? req?.returnRowsLimitValue : null}`
@@ -297,7 +300,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
           } else {
             //"http://new-app.datatera.io/v1/conversion/uploadFileToDb"
             //"http://localhost:5000/api/v1/conversion/uploadFileToDb"
-            fetch(`${baseUrl}/api/v1/conversion/uploadFileToDb`, {
+            fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
               method: "POST",
               headers: {
                 Authorization: "Bearer " + d.token,
@@ -344,7 +347,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       ) {
         console.log("Token Not FOUND");
       } else {
-        fetch(`${baseUrl}/api/v1/conversion/delData/${req?.conversionId}`, {
+        fetch(`${baseUrl}/v1/conversion/delData/${req?.conversionId}`, {
           method: "DELETE",
           headers: {
             Authorization: "Bearer " + d.token,
@@ -370,7 +373,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       ) {
         console.log("Token Not FOUND");
       } else {
-        fetch(`${baseUrl}/api/v1/conversion/getData/${req?.conversionId}`, {
+        fetch(`${baseUrl}/v1/conversion/getData/${req?.conversionId}`, {
           method: "GET",
           headers: {
             Authorization: "Bearer " + d.token,
@@ -396,7 +399,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
   }
 });
 
-function imageUpload(image, fileName) {
+async function imageUpload(image, fileName) {
   var [header, base64] = image.split(",");
   var [_, type] = /data:(.*);base64/.exec(header);
   var binary = atob(base64);
@@ -408,32 +411,39 @@ function imageUpload(image, fileName) {
 
   const file = new File([array], fileName, { type });
 
-  chrome.storage.local.get(["token", "userData", "conversionId"], (d) => {
-    let formData = new FormData();
-    formData.append("file", file);
-    formData.append("id", d.conversionId);
+  chrome.storage.local.get(
+    ["token", "userData", "conversionId", "uploadParams"],
+    (d) => {
+      let formData = new FormData();
+      formData.append("file", file);
+      formData.append("id", d.conversionId);
 
-    if (
-      d.token == null ||
-      d.token == undefined ||
-      d.token == "" ||
-      d.userData == null ||
-      d.userData == undefined ||
-      d.conversionId == null ||
-      d.conversionId == undefined
-    ) {
-      console.log("Image Upload: Missing Form Data");
-    } else {
-      fetch(`${baseUrl}/api/v1/conversion/uploadFileToDb`, {
-        method: "POST",
-        headers: {
-          Authorization: "Bear " + d.token,
-        },
-        body: formData,
-        credentials: "include",
-      })
-        .then((res) => res.json())
-        .then((resp) => console.log(resp));
+      for (const k in d.uploadParams) {
+        formData.append(k, d.uploadParams[k]);
+      }
+
+      if (
+        d.token == null ||
+        d.token == undefined ||
+        d.token == "" ||
+        d.userData == null ||
+        d.userData == undefined ||
+        d.conversionId == null ||
+        d.conversionId == undefined
+      ) {
+        console.log("Image Upload: Missing Form Data");
+      } else {
+        fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bear " + d.token,
+          },
+          body: formData,
+          credentials: "include",
+        })
+          .then((res) => res.json())
+          .then((resp) => console.log(resp));
+      }
     }
-  });
+  );
 }

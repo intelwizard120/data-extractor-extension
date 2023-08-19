@@ -72,7 +72,7 @@ document
 
             $.ajax({
               type: "POST",
-              url: `${baseUrl}/api/v1/conversion/addData`,
+              url: `${baseUrl}/v1/conversion/addData`,
               Headers: {
                 Authorization: "Bearer " + d.token,
               },

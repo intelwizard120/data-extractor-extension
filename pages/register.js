@@ -15,7 +15,7 @@ $(document).ready(() => {
 
     $.ajax({
       type: "POST",
-      url: `${baseUrl}/api/v1/user/register`,
+      url: `${baseUrl}/v1/user/register`,
       data: JSON.stringify({
         email: userEmail,
         password: userPassword,

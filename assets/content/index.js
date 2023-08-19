@@ -119,7 +119,11 @@ var filename = (format) => {
 var save = async (image, format, save) => {
   if (save === "file") {
     let fileName = filename(format);
-    chrome.runtime.sendMessage({ message: "image-upload", image, fileName });
+    chrome.runtime.sendMessage({
+      message: "image-upload",
+      image,
+      fileName
+    });
     $.notify("Image uploaded successfully!", {
       className: "success",
       globalPosition: "top right",

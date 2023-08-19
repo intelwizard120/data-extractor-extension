@@ -1,9 +1,14 @@
+import { updateUploadsInfo } from "../helper.js";
+
 let search = location.search.substring(1);
 search = search.split("=");
 let conversionId = search[1];
 let baseUrl = "";
 
 $(document).ready(() => {
+  // Fetch and Update upload status
+  getUploadsInfo();
+
   chrome.storage.local.get("baseUrl", (result) => {
     baseUrl = result.baseUrl;
     console.log("Retrieved data:", baseUrl);
@@ -21,7 +26,7 @@ $(document).ready(() => {
       console.log(d.userdata);
     } else {
       $.ajax({
-        url: `${baseUrl}/api/v1/conversion/all-notes/` + d.userData._id,
+        url: `${baseUrl}/v1/conversion/all-notes/` + d.userData._id,
         type: "GET",
         dataType: "json",
         Headers: {
@@ -84,3 +89,15 @@ document.getElementById("addBtn").addEventListener("click", (e) => {
   localStorage.setItem("typeNav", JSON.stringify(false));
   window.location.href = "./add-conversions.html";
 });
+
+async function getUploadsInfo() {
+  await updateUploadsInfo();
+  await showUploadsInfo();
+}
+async function showUploadsInfo() {
+  const { uploadsInfo } = await chrome.storage.local.get("uploadsInfo");
+  const { remainingUploads, totalUploads } = uploadsInfo;
+  document.querySelector(
+    ".uploads-info span"
+  ).innerText = `${remainingUploads}/${totalUploads}`;
+}

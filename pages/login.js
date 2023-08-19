@@ -25,7 +25,7 @@ $(document).ready(() => {
 
     $.ajax({
       type: "POST",
-      url: `${baseUrl}/api/v1/user/login`,
+      url: `${baseUrl}/v1/user/login`,
       data: JSON.stringify({ email: userEmail, password: userPassword }),
       dataType: "json",
       contentType: "application/json",
