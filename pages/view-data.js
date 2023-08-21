@@ -51,18 +51,30 @@ function createTable(headers, tableData, convertedData) {
 $(document).ready(() => {
   const data2 = JSON.parse(localStorage.getItem("selectedItem"));
   document.getElementById("success-heading").textContent = data2?.name;
-  const data = JSON.parse(localStorage.getItem("viewData"));
-  conversionIdGlobal = data?.conversion;
-  // Retrieve data from local storage
-  if (data) {
-    createTable(
-      data.data[0].tableHeaders,
-      data.data[0].tableData,
-      data?.convertedData
-    );
-  } else {
-    console.error("Data not found in local storage.");
-  }
+  const data1 = JSON.parse(localStorage.getItem("viewData"));
+  conversionIdGlobal = data1?.conversion;
+  console.log(conversionIdGlobal);
+  chrome.runtime.sendMessage(
+    {
+      message: "getData",
+      conversionId: conversionIdGlobal,
+    },
+    function (response) {
+      if (response?.message === "success") {
+        const data = response?.args;
+        // Retrieve data from local storage
+        if (data) {
+          createTable(
+            data.data[0].tableHeaders,
+            data.data[0].tableData,
+            data?.convertedData
+          );
+        } else {
+          console.error("Data not found in local storage.");
+        }
+      }
+    }
+  );
 });
 
 document.getElementById("openInApp").addEventListener("click", function () {
