@@ -1,9 +1,12 @@
-import "./firebase.js";
-let baseUrl = "";
-chrome.storage.local.get("baseUrl", (result) => {
-  baseUrl = result.baseUrl;
-  console.log("Retrieved data:", baseUrl);
-});
+import { initializeApp } from "/firebase/firebase-app.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithCredential,
+  signOut,
+} from "/firebase/firebase-auth.js";
+
+let firebase, auth;
 
 function initFirebase() {
   const config = {
@@ -15,7 +18,8 @@ function initFirebase() {
     appId: "1:653572586876:web:079d181ea5f08870c7b8f9",
   };
 
-  firebase.initializeApp(config);
+  firebase = initializeApp(config);
+  auth = getAuth(firebase);
 }
 
 // My Code
@@ -26,9 +30,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
 
 function googleLogout() {
   initFirebase();
-  firebase
-    .auth()
-    .signOut()
+  signOut(auth)
     .then(() => {
       chrome.identity.clearAllCachedAuthTokens();
     })
@@ -38,10 +40,8 @@ function googleLogout() {
 function googleLogin() {
   initFirebase();
   chrome.identity.getAuthToken({ interactive: true }, function (token) {
-    let credential = firebase.auth.GoogleAuthProvider.credential(null, token);
-    firebase
-      .auth()
-      .signInWithCredential(credential)
+    let credential = GoogleAuthProvider.credential(null, token);
+    signInWithCredential(auth, credential)
       .then(({ user }) => {
         const obj = {
           token,
@@ -55,7 +55,9 @@ function googleLogin() {
   });
 }
 
-function requestGoogleLogin(body) {
+async function requestGoogleLogin(body) {
+  const { baseUrl } = await chrome.storage.local.get("baseUrl");
+
   fetch(`${baseUrl}/v1/user/googleSignin`, {
     method: "POST",
     headers: {

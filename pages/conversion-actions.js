@@ -67,7 +67,7 @@ const uploadFileToDb = async (data, type, selectedFile) => {
 
 $(document).ready(async () => {
   
-  await showUploadsInfo();
+  await setUploadsInfo();
 
   let search = location.search.substring(1);
   search = search.split("=");
@@ -238,7 +238,7 @@ async function saveUploadParams() {
   chrome.storage.local.set({ uploadParams: data });
 }
 
-async function showUploadsInfo() {
+async function setUploadsInfo() {
   const { uploadsInfo } = await chrome.storage.local.get("uploadsInfo");
   const { remainingUploads, totalUploads } = uploadsInfo;  
   document.querySelector(

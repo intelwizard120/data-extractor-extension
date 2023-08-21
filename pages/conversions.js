@@ -6,8 +6,8 @@ let conversionId = search[1];
 let baseUrl = "";
 
 $(document).ready(() => {
-  // Fetch and Update upload status
-  getUploadsInfo();
+  // Fetch and Display Remaining Uploads
+  showUploadsInfo();
 
   chrome.storage.local.get("baseUrl", (result) => {
     baseUrl = result.baseUrl;
@@ -90,11 +90,11 @@ document.getElementById("addBtn").addEventListener("click", (e) => {
   window.location.href = "./add-conversions.html";
 });
 
-async function getUploadsInfo() {
-  await updateUploadsInfo();
-  await showUploadsInfo();
-}
 async function showUploadsInfo() {
+  await updateUploadsInfo();
+  await setUploadsInfo();
+}
+async function setUploadsInfo() {
   const { uploadsInfo } = await chrome.storage.local.get("uploadsInfo");
   const { remainingUploads, totalUploads } = uploadsInfo;
   document.querySelector(
