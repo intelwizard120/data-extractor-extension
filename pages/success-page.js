@@ -1,7 +1,21 @@
+let conversionIdGlobal = null;
+
 $(document).ready(() => {
   const data = JSON.parse(localStorage.getItem("selectedItem"));
   document.getElementById("success-heading").textContent = data?.name;
+
+  const data1 = JSON.parse(localStorage.getItem("viewData"));
+  conversionIdGlobal = data1?.conversion;
+  console.log(conversionIdGlobal);
 });
+
+document.addEventListener('click', function(e) {
+  if (e.target.matches('#viewDataInApp')) {
+    var linkUrl = `https://new-app.datatera.io/?id=${conversionIdGlobal}`;
+    window.open(linkUrl, "_blank");
+  }
+});
+
 // document.getElementById("myLink").addEventListener("click", function () {
 //   localStorage.setItem(
 //     "viewData",

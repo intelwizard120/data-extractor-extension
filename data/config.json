@@ -1,6 +1,7 @@
 {
-    "url":  "https://new-app.datatera.io",
+    "url": "https://new-app.datatera.io/api",
     "examples":[
+        "https://new-app.datatera.io/api",
         "https://new-app.datatera.io",
         "http://localhost:5000"
     ]
