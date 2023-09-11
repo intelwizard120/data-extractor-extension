@@ -34,6 +34,7 @@ $(document).ready(() => {
         },
         success: function (res) {
           let conversionList = res.getAllConversion;
+          chrome.storage.local.set({ conversionList });
           let rows = "";
           conversionList.forEach((item) => {
             rows += `<div class="tera-conversion-item" data-item='${JSON.stringify(

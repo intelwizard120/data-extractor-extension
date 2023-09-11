@@ -5,9 +5,7 @@ export async function updateUploadsInfo() {
   try {
     const res = await fetch(`${baseUrl}/v1/user/total-uploads`, {
       method: "GET",
-      headers: {
-        Authorization: "Bear " + token,
-      },
+      headers: { Authorization: "Bear " + token },
       credentials: "include",
     });
 
@@ -17,4 +15,22 @@ export async function updateUploadsInfo() {
     console.log(error.message);
   }
   chrome.storage.local.set({ uploadsInfo });
+}
+
+export async function getCurrentPageSource() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let [{ result }] = await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: () => document.documentElement.outerHTML,
+  });  
+  return result;
+}
+
+export async function getSelectedText() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let [{ result }] = await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: () => window.getSelection().toString(),
+  });
+  return result;
 }

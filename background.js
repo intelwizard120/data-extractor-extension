@@ -1,29 +1,47 @@
 import "./google.js";
+import { createContextMenu, MENU_ID } from "./contextMenu.js";
+import { getCurrentPageSource, getSelectedText } from "./helper.js";
+
 // https://new-app.datatera.io
 // http://localhost:5000
 let baseUrl = "";
 // Assuming your JSON file is in the 'data' folder and named 'data.json'
 const jsonFilePath = chrome.runtime.getURL("data/config.json");
 
-fetch(jsonFilePath)
-  .then((response) => response.json())
-  .then((data) => {
-    baseUrl = data.url;
-    console.log(baseUrl);
-    chrome.storage.local.set({ baseUrl: baseUrl }, () => {
-      console.log("Data saved to storage");
+function setDefaultStorage() {
+  fetch(jsonFilePath)
+    .then((response) => response.json())
+    .then((data) => {
+      baseUrl = data.url;
+      console.log(baseUrl);
+      chrome.storage.local.set(
+        {
+          baseUrl: baseUrl,
+          token: "",
+          userLoggedIn: false,
+          conversionList: [],
+          uploadParams: {
+            processURLs: false,
+            smartMerge: false,
+            returnRowsLimit: 0,
+            model: 1,
+          },
+        },
+        () => {
+          console.log("Data saved to storage");
+        }
+      );
+    })
+    .catch((error) => {
+      console.error("Error loading JSON:", error);
     });
-  })
-  .catch((error) => {
-    console.error("Error loading JSON:", error);
-  });
+}
 
 // Check whether new version is installed
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason == "install") {
-    chrome.storage.local.clear(() => {
-      chrome.storage.local.set({ token: "", userLoggedIn: false });
-    });
+    createContextMenu();
+    chrome.storage.local.clear(setDefaultStorage);
   } else if (details.reason == "update") {
     var thisVersion = chrome.runtime.getManifest().version;
     console.log(
@@ -288,7 +306,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         formData.append("merge", `${req?.mergeCheckBox ? true : false}`);
         formData.append("model", `${req?.model ? req?.model : null}`);
 
-        chrome.storage.local.get(["token", "userData"], (d) => {
+        chrome.storage.local.get(["token", "userData", "baseUrl"], (d) => {
           if (
             d.token == null ||
             d.token == undefined ||
@@ -300,6 +318,8 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
           } else {
             //"http://new-app.datatera.io/v1/conversion/uploadFileToDb"
             //"http://localhost:5000/api/v1/conversion/uploadFileToDb"
+
+            let baseUrl = d.baseUrl;
             fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
               method: "POST",
               headers: {
@@ -363,7 +383,8 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       }
     });
   } else if (req.message === "getData") {
-    chrome.storage.local.get(["token", "userData"], (d) => {
+    chrome.storage.local.get(["token", "userData", "baseUrl"], (d) => {
+      let baseUrl = d.baseUrl;
       if (
         d.token == null ||
         d.token == undefined ||
@@ -410,12 +431,16 @@ async function imageUpload(image, fileName) {
   );
 
   const file = new File([array], fileName, { type });
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let sourceUrl = tab.url;
 
   chrome.storage.local.get(
-    ["token", "userData", "conversionId", "uploadParams"],
+    ["token", "userData", "baseUrl", "conversionId", "uploadParams"],
     (d) => {
+      let baseUrl = d.baseUrl;
       let formData = new FormData();
       formData.append("file", file);
+      formData.append("sourceUrl", sourceUrl);
       formData.append("id", d.conversionId);
 
       for (const k in d.uploadParams) {
@@ -446,4 +471,100 @@ async function imageUpload(image, fileName) {
       }
     }
   );
+}
+
+chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
+  const [type, conversionId, mergeType] = menuItemId.split("-");
+  const merge = mergeType == "card" ? true : false;
+
+  if (type == "page" && mergeType) {
+    UploadPage_ContextMenu(conversionId, merge);
+  }
+  if (type == "selection" && mergeType) {
+    UploadSelectedText_ContextMenu(conversionId, merge);
+  }
+});
+
+async function UploadPage_ContextMenu(conversionId, merge) {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let sourceUrl = tab.url;
+  chrome.tabs.sendMessage(tab.id, {
+    action: "notify",
+    text: "Web page uploaded Successfully",
+  });
+  const pageSource = await getCurrentPageSource();
+  const blob = new Blob([pageSource], { type: "text/html" });
+
+  chrome.storage.local.get(["token", "userData", "baseUrl"], (d) => {
+    let baseUrl = d.baseUrl;
+    let formData = new FormData();
+    formData.append("sourceUrl", sourceUrl);
+    formData.append("id", conversionId);
+    formData.append("file", blob);
+    formData.append("merge", merge);
+
+    if (
+      d.token == null ||
+      d.token == undefined ||
+      d.token == "" ||
+      d.userData == null ||
+      d.userData == undefined
+    ) {
+      console.log("Page Upload: Missing Form Data");
+    } else {
+      fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bear " + d.token,
+        },
+        body: formData,
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((resp) => console.log(resp));
+    }
+  });
+}
+
+async function UploadSelectedText_ContextMenu(conversionId, merge) {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  let sourceUrl = tab.url;
+
+  chrome.tabs.sendMessage(tab.id, {
+    action: "notify",
+    text: "Selected text uploaded Successfully",
+  });
+
+  const selectedText = await getSelectedText();  
+  const blob = new Blob([selectedText], { type: "text/plain" });
+
+  chrome.storage.local.get(["token", "userData", "baseUrl"], (d) => {
+    let baseUrl = d.baseUrl;
+    let formData = new FormData();
+    formData.append("sourceUrl", sourceUrl);
+    formData.append("id", conversionId);
+    formData.append("file", blob);
+    formData.append("merge", merge);
+
+    if (
+      d.token == null ||
+      d.token == undefined ||
+      d.token == "" ||
+      d.userData == null ||
+      d.userData == undefined
+    ) {
+      console.log("Selected Text Upload: Missing Form Data");
+    } else {
+      fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bear " + d.token,
+        },
+        body: formData,
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((resp) => console.log(resp));
+    }
+  });
 }

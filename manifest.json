@@ -1,7 +1,7 @@
 {
   "name": "Datatera.ai",
   "manifest_version": 3,
-  "version": "0.0.0.7",
+  "version": "0.0.0.8",
   "description": "Extension allows to convert any website or file or text to a structured dataset. No single line of code or mappings needed.",
   "background": {
     "service_worker": "background.js",
@@ -25,7 +25,19 @@
     "scripting",
     "identity",
     "clipboardRead",
-    "downloads"
+    "downloads",
+    "contextMenus"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "assets/vendor/jquery.min.js",
+        "assets/vendor/notify.min.js",
+        "assets/content/content.js"
+      ]
+    }
   ],
   "web_accessible_resources": [
     {

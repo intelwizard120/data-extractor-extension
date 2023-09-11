@@ -66,8 +66,8 @@ const uploadFileToDb = async (data, type, selectedFile) => {
 };
 
 $(document).ready(async () => {
-  
   await setUploadsInfo();
+  addSettingsEventListener();
 
   let search = location.search.substring(1);
   search = search.split("=");
@@ -225,23 +225,29 @@ async function saveUploadParams() {
   let merge = document.getElementById("smartMerge").checked;
   let returnRowsLimit = document.getElementById("returnRowsLimit").value;
   let model = document.getElementById("model").value;
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  let sourceUrl = tab.url;
 
   const data = {
     processUrls,
     merge,
     returnRowsLimit,
     model,
-    sourceUrl,
   };
   chrome.storage.local.set({ uploadParams: data });
 }
 
 async function setUploadsInfo() {
   const { uploadsInfo } = await chrome.storage.local.get("uploadsInfo");
-  const { remainingUploads, totalUploads } = uploadsInfo;  
+  const { remainingUploads, totalUploads } = uploadsInfo;
   document.querySelector(
     ".uploads-info span"
   ).innerText = `${remainingUploads}/${totalUploads}`;
+}
+
+function addSettingsEventListener() {
+  let fields = ["processURLs", "smartMerge", "returnRowsLimit", "model"];
+  for (const f of fields) {
+    document
+      .querySelector(`#${f}`)
+      .addEventListener("change", saveUploadParams);
+  }
 }

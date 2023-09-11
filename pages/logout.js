@@ -7,5 +7,16 @@ document.getElementById("logout-btn").addEventListener("click", async (e) => {
 
 async function resetStorageState() {
   const { baseUrl } = await chrome.storage.local.get("baseUrl");
-  chrome.storage.local.set({ baseUrl, token: "", userLoggedIn: false });
+  chrome.storage.local.set({
+    baseUrl,
+    token: "",
+    userLoggedIn: false,
+    conversionList: [],
+    uploadParams: {
+      processURLs: false,
+      smartMerge: false,
+      returnRowsLimit: 0,
+      model: 1,
+    },
+  });
 }
