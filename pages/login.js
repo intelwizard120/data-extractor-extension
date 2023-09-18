@@ -1,23 +1,34 @@
+import { getUser } from "../helper.js";
+
 let baseUrl = "";
 
-chrome.storage.local.get(["userLoggedIn", "baseUrl"], (d) => {
-  if (
-    d.userLoggedIn == null ||
-    d.userLoggedIn == undefined ||
-    d.userLoggedIn == ""
-  ) {
-  } else {
-    chrome.action.setPopup({ popup: "/pages/conversions.html" });
-    window.location.href = "./conversions.html";
-  }
-  if (d.baseUrl) {
-    baseUrl = d.baseUrl;
-    console.log("Retrieved data:", baseUrl);
-  }
+chrome.storage.local.get(["baseUrl"], (d) => {
+  baseUrl = d.baseUrl;
+  console.log("Retrieved data:", baseUrl);
 });
 
-$(document).ready(() => {
-  $(document).on("submit", "#login_form", (e) => {
+const loginBtn = document.querySelector("#login-btn");
+const registerLink = document.querySelector("#register-link");
+
+loginBtn.addEventListener("click", () => {
+  chrome.tabs.create({ url: "https://new-app.datatera.io/signin" });
+});
+
+registerLink.addEventListener("click", (e) => {
+  e.preventDefault();
+  chrome.tabs.create({ url: "https://new-app.datatera.io/register" });
+});
+
+$(document).ready(async () => {
+  let user = await getUser();
+  if (user) {
+    await chrome.storage.local.set({ ...user });
+    showDashboard();
+    return;
+  }
+  showLoginForm();
+
+  /* $(document).on("submit", "#login_form", (e) => {
     e.preventDefault();
 
     let userEmail = $("#user-email").val();
@@ -48,13 +59,13 @@ $(document).ready(() => {
         console.log("I am complete");
       },
     });
-  });
+  }); */
 });
 
-document.getElementById("google-login-btn").addEventListener("click", (e) => {
+/* document.getElementById("google-login-btn").addEventListener("click", (e) => {
   chrome.runtime.sendMessage({ message: "google-login" });
 });
-
+ */
 chrome.runtime.onMessage.addListener((req, sender, res) => {
   if (req.message === "dashboard") showDashboard();
 });
@@ -62,4 +73,16 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
 function showDashboard() {
   chrome.action.setPopup({ popup: "/pages/conversions.html" });
   window.location.href = "./conversions.html";
+}
+
+function showLoginForm() {
+  document.querySelector(".loader").remove();
+  const sectionElements = document.querySelectorAll(
+    'section[class*="tera-login-"]'
+  );
+  sectionElements.forEach(function (section) {
+    if (section.classList.contains("display-none")) {
+      section.classList.remove("display-none");
+    }
+  });
 }

@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="/assets/css/style.css">
     <style>
         .tera-container {
-            height: 600px;
+            height: auto;
+            padding-bottom: 10px;
         }
     </style>
 </head>
@@ -22,8 +23,8 @@
         </div>
         <section class="tera-welcome-top">
             <img src="/assets/images/logo.png" alt="">
-            <h1>Upload Data</h1>
-            <p style="width: 140px;">Select the opition</p>
+            <h1 style="text-align: center; font-size: 16px;">Upload Data</h1>
+            <p style="width: 140px; height: auto;">Select the opition</p>
         </section>
 
         <div class="uploads-info">
@@ -32,7 +33,7 @@
 
         <div class="loader display-none"></div>
 
-        <section class="tera-action-section">
+        <section class="tera-action-section" style="margin-top: 10px;">
 
             <div class="tera-action-btn" id="upload_whole_page_btn">
                 <img class="tera-action-icon" src="/assets/images/webpage.png" alt="">
@@ -46,6 +47,7 @@
                 <img class="tera-action-icon" src="/assets/images/screenshot.png" alt="">
                 <p>Screenshot area</p>
             </div>
+            <hr class="divider" />
             <div class="tera-action-btn" id="file_upload_btn">
                 <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
                 <p>Upload File</p>
@@ -65,6 +67,8 @@
             </div> -->
 
         </section>
+
+
         <div class="btn-containers">
             <div>
                 <div class="display-flex align-items-center ">
@@ -93,6 +97,12 @@
                 </div>
             </div>
         </div>
+        <section style="text-align: center; margin-top: 5px;" >
+            <hr class="divider" />
+            <div class="tera-action-btn" style="margin: auto;">
+                <p id="viewDataInApp">View Data</p>
+            </div>
+        </section>
 
     </div>
 

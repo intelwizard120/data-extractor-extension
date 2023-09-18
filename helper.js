@@ -22,7 +22,7 @@ export async function getCurrentPageSource() {
   let [{ result }] = await chrome.scripting.executeScript({
     target: { tabId: tab.id },
     func: () => document.documentElement.outerHTML,
-  });  
+  });
   return result;
 }
 
@@ -33,4 +33,19 @@ export async function getSelectedText() {
     func: () => window.getSelection().toString(),
   });
   return result;
+}
+
+export async function getUser() {
+  try {
+    const res = await fetch(
+      "https://new-app.datatera.io/api/v1/user/userDetails"
+    );    
+    const { token, ...userData } = await res.json();
+    if (!token) return null;
+    return { token, userData, userLoggedIn: true };
+  } catch (error) {
+    console.log(error);
+  }
+
+  return null;
 }

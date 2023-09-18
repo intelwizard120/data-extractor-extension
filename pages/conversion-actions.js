@@ -68,10 +68,13 @@ const uploadFileToDb = async (data, type, selectedFile) => {
 $(document).ready(async () => {
   await setUploadsInfo();
   addSettingsEventListener();
+  await updateConversionName();
+  addViewDataListener();
 
   let search = location.search.substring(1);
   search = search.split("=");
   let conversionId = search[1];
+
   chrome.storage.local.set({ conversionId });
   $("#text_upload_btn").click((e) => {
     window.location.href = "/pages/text_upload_action.html?id=" + conversionId;
@@ -250,4 +253,19 @@ function addSettingsEventListener() {
       .querySelector(`#${f}`)
       .addEventListener("change", saveUploadParams);
   }
+}
+
+async function updateConversionName() {
+  const { conversionList } = await chrome.storage.local.get("conversionList");
+  let conversionName = conversionList.find((c) => c._id == conversionId)?.name;
+  document.querySelector(".tera-welcome-top h1").innerText = conversionName;
+}
+
+function addViewDataListener() {
+  document.addEventListener("click", function (e) {
+    if (e.target.matches("#viewDataInApp")) {
+      var linkUrl = `https://new-app.datatera.io/?id=${conversionId}`;
+      window.open(linkUrl, "_blank");
+    }
+  });
 }

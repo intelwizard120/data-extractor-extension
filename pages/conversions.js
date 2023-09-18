@@ -1,11 +1,16 @@
-import { updateUploadsInfo } from "../helper.js";
+import { updateUploadsInfo, getUser } from "../helper.js";
 
 let search = location.search.substring(1);
 search = search.split("=");
 let conversionId = search[1];
 let baseUrl = "";
 
-$(document).ready(() => {
+$(document).ready(async () => {
+  let user = await getUser();
+  if (!user) return redirectLoginPage();
+  await chrome.storage.local.set({ ...user });
+  showConversion();
+
   // Fetch and Display Remaining Uploads
   showUploadsInfo();
 
@@ -101,4 +106,18 @@ async function setUploadsInfo() {
   document.querySelector(
     ".uploads-info span"
   ).innerText = `${remainingUploads}/${totalUploads}`;
+}
+
+function redirectLoginPage() {
+  chrome.action.setPopup({ popup: "/pages/login.html" });
+  window.location.href = "./login.html";
+}
+function showConversion() {
+  document.querySelector(".loader").remove();
+  const sectionElements = document.querySelectorAll('[class*="display-none"]');
+  sectionElements.forEach(function (section) {
+    if (section.classList.contains("display-none")) {
+      section.classList.remove("display-none");
+    }
+  });
 }
