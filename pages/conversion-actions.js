@@ -115,11 +115,8 @@ document
   .addEventListener("click", (e) => {
     saveUploadParams();
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      var tab = tabs[0];
-      chrome.runtime.sendMessage({
-        message: "inject",
-        tabData: JSON.stringify(tab),
-      });
+      var [tab] = tabs;
+      chrome.tabs.sendMessage(tab.id, { action: "ss-selection" });
       window.close();
     });
   });

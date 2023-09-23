@@ -1,4 +1,5 @@
 import "./google.js";
+import "./ss-background.js";
 import { createContextMenu, MENU_ID } from "./contextMenu.js";
 import { getCurrentPageSource, getSelectedText } from "./helper.js";
 
@@ -94,7 +95,7 @@ chrome.storage.sync.get((config) => {
   //     ), {})
   // })
 });
-function inject(tab) {
+/* function inject(tab) {
   console.log("inside inject");
   chrome.tabs.sendMessage(
     tab.id,
@@ -157,7 +158,7 @@ function inject(tab) {
       });
     }, 100);
   }, 100);
-}
+} */
 // chrome.action.onClicked.addListener((tab) => {
 //     inject(tab)
 // })
@@ -177,7 +178,6 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
       chrome.tabs.query(
         {
           active: true,
-          currentWindow: true,
         },
         (tab) => {
           chrome.tabs.captureVisibleTab(
@@ -267,7 +267,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
   } else if (req.message == "inject") {
     console.log("Inject Message");
     let tab = JSON.parse(req.tabData);
-
+    chrome.tabs.sendMessage(tab.id, { message: "init" });
     // Get the popup window.
     // const popup = chrome.windows.get({
     //   url: "/pages/conversion-actions.html",
@@ -275,9 +275,9 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
 
     // // Close the popup window.
     // popup.close();
-    setTimeout(() => {
+    /* setTimeout(() => {
       inject(tab);
-    }, 1000);
+    }, 1000); */
   } else if (req.message == "full_page_screenshot") {
     setTimeout(() => {
       chrome.windows.getCurrent((currentWindow) => {
@@ -431,7 +431,7 @@ async function imageUpload(image, fileName) {
   );
 
   const file = new File([array], fileName, { type });
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const [tab] = await chrome.tabs.query({ active: true });
   let sourceUrl = tab.url;
 
   chrome.storage.local.get(
@@ -486,7 +486,7 @@ chrome.contextMenus.onClicked.addListener(({ menuItemId }) => {
 });
 
 async function UploadPage_ContextMenu(conversionId, merge) {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const [tab] = await chrome.tabs.query({ active: true });
   let sourceUrl = tab.url;
   chrome.tabs.sendMessage(tab.id, {
     action: "notify",
@@ -527,7 +527,7 @@ async function UploadPage_ContextMenu(conversionId, merge) {
 }
 
 async function UploadSelectedText_ContextMenu(conversionId, merge) {
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const [tab] = await chrome.tabs.query({ active: true });
   let sourceUrl = tab.url;
 
   chrome.tabs.sendMessage(tab.id, {
@@ -535,7 +535,7 @@ async function UploadSelectedText_ContextMenu(conversionId, merge) {
     text: "Selected text uploaded Successfully",
   });
 
-  const selectedText = await getSelectedText();  
+  const selectedText = await getSelectedText();
   const blob = new Blob([selectedText], { type: "text/plain" });
 
   chrome.storage.local.get(["token", "userData", "baseUrl"], (d) => {

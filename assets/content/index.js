@@ -122,7 +122,7 @@ var save = async (image, format, save) => {
     chrome.runtime.sendMessage({
       message: "image-upload",
       image,
-      fileName
+      fileName,
     });
     $.notify("Image uploaded successfully!", {
       className: "success",
@@ -165,17 +165,16 @@ window.addEventListener(
   ((timeout) => () => {
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      jcrop.destroy();
-      init(() => overlay(null));
+      if (jcrop) {
+        jcrop.destroy();
+        init(() => overlay(null));
+      }
     }, 100);
   })()
 );
 
 chrome.runtime.onMessage.addListener((req, sender, res) => {
   if (req.message === "init") {
-    res({}); // prevent re-injecting
-    console.log("init");
-
     if (!jcrop) {
       image(() =>
         init(() => {
