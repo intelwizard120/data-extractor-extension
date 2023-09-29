@@ -1,5 +1,5 @@
 document.getElementById("logout-btn").addEventListener("click", async (e) => {
-  chrome.runtime.sendMessage({ message: "google-logout" });  
+  // chrome.runtime.sendMessage({ message: "google-logout" });  
   await chrome.tabs.create({ url: "https://new-app.datatera.io/logout" });
   await reloadTabs();
   await resetStorageState();

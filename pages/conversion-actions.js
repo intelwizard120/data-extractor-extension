@@ -124,8 +124,11 @@ document
 document
   .getElementById("upload_whole_page_btn")
   .addEventListener("click", (e) => {
-    var loaderElement = document.querySelector(".loader");
-    loaderElement.style.display = "flex";
+    /*     var loaderElement = document.querySelector(".loader");
+    loaderElement.style.display = "flex"; */
+
+    notify("Page uploaded successfully!");
+
     let pageSourceString;
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -161,9 +164,9 @@ document.getElementById("file_upload_btn").addEventListener("click", () => {
   fileInput.type = "file";
   fileInput.click();
   fileInput.addEventListener("change", () => {
-    var loaderElement = document.querySelector(".loader");
-    loaderElement.style.display = "flex";
-
+    /*  var loaderElement = document.querySelector(".loader");
+    loaderElement.style.display = "flex"; */
+    notify("File uploaded successfully!");
     const selectedFile = fileInput.files[0];
     console.log("Selected file:", selectedFile);
     uploadFileToDb("", "file", selectedFile);
@@ -173,8 +176,9 @@ document.getElementById("file_upload_btn").addEventListener("click", () => {
 });
 
 document.getElementById("highlight-action").addEventListener("click", () => {
-  var loaderElement = document.querySelector(".loader");
-  loaderElement.style.display = "flex";
+  /* var loaderElement = document.querySelector(".loader");
+  loaderElement.style.display = "flex"; */
+  notify("Selected content uploaded successfully!");
   let highlightedText = "";
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -264,5 +268,12 @@ function addViewDataListener() {
       var linkUrl = `https://new-app.datatera.io/?id=${conversionId}`;
       window.open(linkUrl, "_blank");
     }
+  });
+}
+
+function notify(msg) {
+  $.notify(msg, {
+    className: "success",
+    globalPosition: "top right",
   });
 }

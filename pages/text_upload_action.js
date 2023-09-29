@@ -10,8 +10,9 @@ document
   .getElementById("text_upload_action_form")
   .addEventListener("submit", (e) => {
     e.preventDefault();
-    var loaderElement = document.querySelector(".loader");
-    loaderElement.style.display = "flex";
+    /* var loaderElement = document.querySelector(".loader");
+    loaderElement.style.display = "flex"; */
+    notify("Text uploaded successfully!")
 
     let textCheckBox = false;
     if (document.getElementById("processURLs").checked) {
@@ -65,3 +66,10 @@ document
       }
     );
   });
+
+function notify(msg) {
+  $.notify(msg, {
+    className: "success",
+    globalPosition: "top right",
+  });
+}

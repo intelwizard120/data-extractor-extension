@@ -1,4 +1,3 @@
-import "./google.js";
 import "./ss-background.js";
 import { createContextMenu, MENU_ID } from "./contextMenu.js";
 import { getCurrentPageSource, getSelectedText } from "./helper.js";
@@ -305,6 +304,7 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         );
         formData.append("merge", `${req?.mergeCheckBox ? true : false}`);
         formData.append("model", `${req?.model ? req?.model : null}`);
+        formData.append("isBackground", true);
 
         chrome.storage.local.get(["token", "userData", "baseUrl"], (d) => {
           if (
@@ -442,6 +442,7 @@ async function imageUpload(image, fileName) {
       formData.append("file", file);
       formData.append("sourceUrl", sourceUrl);
       formData.append("id", d.conversionId);
+      formData.append("isBackground", true);
 
       for (const k in d.uploadParams) {
         formData.append(k, d.uploadParams[k]);
@@ -502,6 +503,7 @@ async function UploadPage_ContextMenu(conversionId, merge) {
     formData.append("id", conversionId);
     formData.append("file", blob);
     formData.append("merge", merge);
+    formData.append("isBackground", true);
 
     if (
       d.token == null ||
@@ -545,6 +547,7 @@ async function UploadSelectedText_ContextMenu(conversionId, merge) {
     formData.append("id", conversionId);
     formData.append("file", blob);
     formData.append("merge", merge);
+    formData.append("isBackground", true);
 
     if (
       d.token == null ||
