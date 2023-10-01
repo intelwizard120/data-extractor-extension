@@ -22,8 +22,7 @@
     "unlimitedStorage",
     "storage",
     "activeTab",
-    "scripting",
-    "identity",
+    "scripting",    
     "clipboardRead",
     "downloads",
     "contextMenus"
