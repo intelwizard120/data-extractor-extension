@@ -24,51 +24,16 @@
         <section class="tera-welcome-top">
             <img src="/assets/images/logo.png" alt="">
             <h1 style="text-align: center; font-size: 16px;">Upload Data</h1>
-            <p style="width: 140px; height: auto;">Select the opition</p>
+            <!-- <p style="width: 140px; height: auto;">Select the opition</p> -->
         </section>
 
         <div class="uploads-info">
-            Remaining uploads: <span>0/0</span>
+            Conversions remained today: <span>0/0</span>
         </div>
 
         <div class="loader display-none"></div>
 
-        <section class="tera-action-section" style="margin-top: 10px;">
-
-            <div class="tera-action-btn" id="upload_whole_page_btn">
-                <img class="tera-action-icon" src="/assets/images/webpage.png" alt="">
-                <p>Upload whole Web page</p>
-            </div>
-            <div class="tera-action-btn" id="highlight-action">
-                <img class="tera-action-icon" src="/assets/images/cursor.png" alt="">
-                <p>Selected Content</p>
-            </div>
-            <div class="tera-action-btn" id="screenshot_area_btn">
-                <img class="tera-action-icon" src="/assets/images/screenshot.png" alt="">
-                <p>Screenshot area</p>
-            </div>
-            <hr class="divider" />
-            <div class="tera-action-btn" id="file_upload_btn">
-                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
-                <p>Upload File</p>
-            </div>
-            <!-- <div class="tera-action-btn" id="url_upload_btn" >
-                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
-                <p>Upload URLs</p>
-            </div> -->
-            <div class="tera-action-btn" id="text_upload_btn">
-                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
-                <p>Upload Text</p>
-            </div>
-
-            <!-- <div class="tera-action-btn bg-white" id="reloadCsv">
-                <img class="tera-action-icon" src="/assets/images/file.png" alt="">
-                <p>Reload CSV</p>
-            </div> -->
-
-        </section>
-
-
+        <br/>
         <div class="btn-containers">
             <div>
                 <div class="display-flex align-items-center ">
@@ -76,11 +41,14 @@
                     <label for="processURLs" style="margin-left: 5px;" class="options-text">Process URLs</label>
                 </div>
                 <div style="margin-top: 10px;">
-                    <label for="returnRowsLimit" class="options-text">Return rows limit <br />(0 for unlimited
+                    <label for="returnRowsLimit" class="options-text" hidden>Return rows limit <br />(0 for unlimited
                         rows):</label>
-                    <br />
+                    <br hidden/>
                     <input type="number" style="width: 50px;margin-top: 5px;" id="returnRowsLimit"
-                        name="returnRowsLimit" value="0">
+                        name="returnRowsLimit" value="0" hidden>
+                    <br hidden/>
+                    <label for="model" class="options-text">AI model:</label>
+                    <input type="number" id="model" name="model" value="1" style="width: 50px;margin-top: 5px;">
                 </div>
             </div>
             <div style="margin-left: 30px;">
@@ -89,18 +57,52 @@
                     <label for="smartMerge" style="margin-left: 5px;" class="options-text">Smart Merge</label>
                 </div>
 
-                <div style="margin-top: 10px;">
+                <div style="margin-top: 10px;" hidden>
                     <br />
-                    <label for="model" class="options-text">AI model:</label>
-                    <br />
-                    <input type="number" id="model" name="model" value="1" style="width: 50px;margin-top: 5px;">
+                    
                 </div>
             </div>
         </div>
+
+        <section class="tera-action-section" style="margin-top: 10px;">
+
+            <div class="tera-action-btn" id="upload_whole_page_btn">
+                <img class="tera-action-icon" src="/assets/images/webpage.png" alt="">
+                <p>Convert Current Webpage</p>
+            </div>
+            <div class="tera-action-btn" id="highlight-action">
+                <img class="tera-action-icon" src="/assets/images/cursor.png" alt="">
+                <p>Convert Selected Text on Webpage</p>
+            </div>
+            <div class="tera-action-btn" id="screenshot_area_btn">
+                <img class="tera-action-icon" src="/assets/images/screenshot.png" alt="">
+                <p>Screenshot Area of Webpage to Convert</p>
+            </div>
+            <hr class="divider" />
+            <div class="tera-action-btn" id="file_upload_btn">
+                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
+                <p>Upload File to Convert</p>
+            </div>
+            <!-- <div class="tera-action-btn" id="url_upload_btn" >
+                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
+                <p>Upload URLs</p>
+            </div> -->
+            <div class="tera-action-btn" id="text_upload_btn">
+                <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
+                <p>Upload Text to Convert <br />(new screen will appear to enter text)</p>
+            </div>
+
+            <!-- <div class="tera-action-btn bg-white" id="reloadCsv">
+                <img class="tera-action-icon" src="/assets/images/file.png" alt="">
+                <p>Reload CSV</p>
+            </div> -->
+
+        </section>
+        
         <section style="text-align: center; margin-top: 5px;">
             <hr class="divider" />
             <div class="tera-action-btn" style="margin: auto;">
-                <p id="viewDataInApp">View Data</p>
+                <p id="viewDataInApp">View Previously Converted Data</p>
             </div>
         </section>
 
