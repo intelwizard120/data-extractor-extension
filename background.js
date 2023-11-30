@@ -294,7 +294,6 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         // console.log("Received file in background script:", file);
         let formData = new FormData();
 
-        formData.append("file", file);
         formData.append("id", req?.conversionId);
         formData.append("sourceUrl", req?.sourceUrl);
         formData.append("processUrls", `${req?.textCheckBox ? true : false}`);
@@ -305,6 +304,8 @@ chrome.runtime.onMessage.addListener((req, sender, res) => {
         formData.append("merge", `${req?.mergeCheckBox ? true : false}`);
         formData.append("model", `${req?.model ? req?.model : null}`);
         formData.append("isBackground", true);
+
+        formData.append("file", file);
 
         chrome.storage.local.get(["token", "userData", "baseUrl"], (d) => {
           if (
@@ -439,14 +440,17 @@ async function imageUpload(image, fileName) {
     (d) => {
       let baseUrl = d.baseUrl;
       let formData = new FormData();
-      formData.append("file", file);
       formData.append("sourceUrl", sourceUrl);
       formData.append("id", d.conversionId);
       formData.append("isBackground", true);
+      formData.append("model", 1);
+      formData.append("processUrls", false);
 
       for (const k in d.uploadParams) {
         formData.append(k, d.uploadParams[k]);
       }
+
+      formData.append("file", file);
 
       if (
         d.token == null ||
@@ -501,9 +505,12 @@ async function UploadPage_ContextMenu(conversionId, merge) {
     let formData = new FormData();
     formData.append("sourceUrl", sourceUrl);
     formData.append("id", conversionId);
-    formData.append("file", blob);
     formData.append("merge", merge);
+    formData.append("model", 1);
+    formData.append("processUrls", false);
     formData.append("isBackground", true);
+
+    formData.append("file", blob);
 
     if (
       d.token == null ||
@@ -545,9 +552,12 @@ async function UploadSelectedText_ContextMenu(conversionId, merge) {
     let formData = new FormData();
     formData.append("sourceUrl", sourceUrl);
     formData.append("id", conversionId);
-    formData.append("file", blob);
     formData.append("merge", merge);
     formData.append("isBackground", true);
+    formData.append("model", 1);
+    formData.append("processUrls", false);
+
+    formData.append("file", blob);
 
     if (
       d.token == null ||

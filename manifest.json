@@ -1,7 +1,7 @@
 {
   "name": "Datatera.ai",
   "manifest_version": 3,
-  "version": "0.0.0.13",
+  "version": "0.0.0.14",
   "description": "Allows to convert ANY website, file or text to structured data, spreadsheet, CRM/ERP, etc. No code or mappings needed.",
   "background": {
     "service_worker": "background.js",
