@@ -443,8 +443,8 @@ async function imageUpload(image, fileName) {
       formData.append("sourceUrl", sourceUrl);
       formData.append("id", d.conversionId);
       formData.append("isBackground", true);
-      formData.append("model", 1);
-      formData.append("processUrls", false);
+      //formData.append("model", 1);
+      //formData.append("processUrls", false);
 
       for (const k in d.uploadParams) {
         formData.append(k, d.uploadParams[k]);
@@ -463,6 +463,7 @@ async function imageUpload(image, fileName) {
       ) {
         console.log("Image Upload: Missing Form Data");
       } else {
+        //console.log("Form data (screenshot): "+formData);
         fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
           method: "POST",
           headers: {

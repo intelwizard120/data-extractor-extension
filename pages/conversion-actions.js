@@ -117,7 +117,7 @@ document
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       var [tab] = tabs;
       chrome.tabs.sendMessage(tab.id, { action: "ss-selection" });
-      window.close();
+      //window.close();
     });
   });
 
@@ -227,8 +227,10 @@ document.getElementById("reloadCsv").addEventListener("click", (e) => {
 async function saveUploadParams() {
   let processUrls = document.getElementById("processURLs").checked;
   let merge = document.getElementById("smartMerge").checked;
-  let returnRowsLimit = document.getElementById("returnRowsLimit").value;
-  let model = document.getElementById("model").value;
+  //let returnRowsLimit = document.getElementById("returnRowsLimit").value;
+  let returnRowsLimit = 0;
+  //let model = document.getElementById("model").value;
+  let model = 1;
 
   const data = {
     processUrls,
@@ -236,6 +238,7 @@ async function saveUploadParams() {
     returnRowsLimit,
     model,
   };
+  console.log(data.toString());
   chrome.storage.local.set({ uploadParams: data });
 }
 
