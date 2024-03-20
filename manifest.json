@@ -25,7 +25,8 @@
     "scripting",    
     "clipboardRead",
     "downloads",
-    "contextMenus"
+    "contextMenus",
+    "tabCapture"
   ],
 
   "content_scripts": [

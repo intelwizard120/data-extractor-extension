@@ -1,6 +1,8 @@
 let search = location.search.substring(1);
 search = search.split("=");
 let conversionId = search[1];
+let mediaRecorder = null;
+let chunks = [];
 
 const uploadFileToDb = async (data, type, selectedFile) => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -122,6 +124,17 @@ document
   });
 
 document
+  .getElementById("record_audio_btn")
+  .addEventListener("click", (e) => {
+    e.stopPropagation();
+    let current = e.currentTarget.children[1].innerText;
+    saveUploadParams();
+    if (current === "Record Audio") startRecord();
+    else if (current === "Stop Record") stopRecord();
+    e.currentTarget.children[1].innerText = current === "Record Audio" ? "Stop Record" : "Record Audio";
+});
+
+document
   .getElementById("upload_whole_page_btn")
   .addEventListener("click", (e) => {
     /*     var loaderElement = document.querySelector(".loader");
@@ -238,7 +251,7 @@ async function saveUploadParams() {
     returnRowsLimit,
     model,
   };
-  console.log(data.toString());
+//  console.log(data.toString());
   chrome.storage.local.set({ uploadParams: data });
 }
 
@@ -279,4 +292,106 @@ function notify(msg) {
     className: "success",
     globalPosition: "top right",
   });
+}
+
+function startRecord() {
+  chrome.tabCapture.capture({
+    audio: true,
+    video: false,
+  }, (stream) => {
+    mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = (event) => {
+      chunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(chunks, { type: 'audio/wav' });
+      // const url = URL.createObjectURL(blob);
+      // const a = document.createElement('a');
+      // a.href = url;
+      // a.download = 'captured_audio.wav';
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+      chunks = [];
+      audioUpload(blob);
+    };
+
+    mediaRecorder.start();
+  });
+}
+
+function stopRecord() {
+  notify("Audio uploaded successfully!");
+  mediaRecorder.stop();
+  setTimeout(()=>window.close(), 1000);
+}
+
+async function audioUpload(blob) {
+  // var [header, base64] = image.split(",");
+  // var [_, type] = /data:(.*);base64/.exec(header);
+  // var binary = atob(base64);
+  // var array = new Uint8Array(
+  //   Array.from({ length: binary.length }, (_, index) =>
+  //     binary.charCodeAt(index)
+  //   )
+  // );
+
+  // const file = new File([array], fileName, { type });
+  const [tab] = await chrome.tabs.query({ active: true });
+  let sourceUrl = tab.url;
+
+  chrome.storage.local.get(
+    ["token", "userData", "baseUrl", "conversionId", "uploadParams"],
+    (d) => {
+      let baseUrl = d.baseUrl;
+      let formData = new FormData();
+      formData.append("sourceUrl", sourceUrl);
+      formData.append("id", d.conversionId);
+      formData.append("isBackground", true);
+      //formData.append("model", 1);
+      //formData.append("processUrls", false);
+
+      for (const k in d.uploadParams) {
+        formData.append(k, d.uploadParams[k]);
+      }
+
+      var pad = (n) => ((n = n + ""), n.length >= 2 ? n : `0${n}`);
+      var timestamp = (now) =>
+        [pad(now.getFullYear()), pad(now.getMonth() + 1), pad(now.getDate())].join(
+          "-"
+        ) +
+        " - " +
+        [pad(now.getHours()), pad(now.getMinutes()), pad(now.getSeconds())].join(
+          "-"
+        );
+
+      formData.append("file", blob, `Audio Record - ${timestamp(new Date())}.wav`);
+
+      if (
+        d.token == null ||
+        d.token == undefined ||
+        d.token == "" ||
+        d.userData == null ||
+        d.userData == undefined ||
+        d.conversionId == null ||
+        d.conversionId == undefined
+      ) {
+        console.log("Image Upload: Missing Form Data");
+      } else {
+        //console.log("Form data (screenshot): "+formData);
+        fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bear " + d.token,
+          },
+          body: formData,
+          credentials: "include",
+        })
+          .then((res) => res.json())
+          .then((resp) => console.log(resp));
+      }
+    }
+  );
 }
