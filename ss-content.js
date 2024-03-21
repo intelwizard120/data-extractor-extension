@@ -164,12 +164,22 @@ async function startCropping(data) {
     width,
   });
 
-  notify("Image uploaded successfully!");
-
-  chrome.runtime.sendMessage({
-    message: "image-upload",
-    image: croppedImage,
-    fileName: getImageFileName(),
+  $.confirm({
+    title: "Image Crop",
+    content: "Are you sure?",
+    buttons: {
+      Upload: function () {
+        notify("Image uploaded successfully!");
+        chrome.runtime.sendMessage({
+          message: "image-upload",
+          image: croppedImage,
+          fileName: getImageFileName(),
+        });
+      },
+      Cancel: function () {
+        return;
+      },
+    },
   });
 }
 

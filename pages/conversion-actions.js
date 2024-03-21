@@ -323,7 +323,7 @@ function startRecord() {
 }
 
 function stopRecord() {
-  notify("Audio uploaded successfully!");
+  $.notify("Audio uploaded successfully!", "success");
   mediaRecorder.stop();
   setTimeout(()=>window.close(), 1000);
 }
@@ -378,7 +378,7 @@ async function audioUpload(blob) {
         d.conversionId == null ||
         d.conversionId == undefined
       ) {
-        console.log("Image Upload: Missing Form Data");
+        console.log("Audio Upload: Missing Form Data");
       } else {
         //console.log("Form data (screenshot): "+formData);
         fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
