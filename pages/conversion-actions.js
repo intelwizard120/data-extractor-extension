@@ -124,14 +124,21 @@ document
   });
 
 document
-  .getElementById("record_audio_btn")
+  .getElementById("capture_audio_btn")
   .addEventListener("click", (e) => {
     e.stopPropagation();
     let current = e.currentTarget.children[1].innerText;
     saveUploadParams();
-    if (current === "Record Audio") startRecord();
-    else if (current === "Stop Record") stopRecord();
-    e.currentTarget.children[1].innerText = current === "Record Audio" ? "Stop Record" : "Record Audio";
+    if (current === "Capture Audio") startAudioCapture();
+    else if (current === "Stop Capture") stopAudioRecord();
+    e.currentTarget.children[1].innerText = current === "Capture Audio" ? "Stop Capture" : "Capture Audio";
+});
+
+document
+  .getElementById("record_audio_btn")
+  .addEventListener("click", async (e) => {
+    saveUploadParams();
+    await chrome.tabs.create({ url: chrome.runtime.getURL("pages//record.html"), active: true, index: 0, pinned: true });
 });
 
 document
@@ -294,7 +301,7 @@ function notify(msg) {
   });
 }
 
-function startRecord() {
+function startAudioCapture() {
   chrome.tabCapture.capture({
     audio: true,
     video: false,
@@ -322,9 +329,9 @@ function startRecord() {
   });
 }
 
-function stopRecord() {
-  $.notify("Audio uploaded successfully!", "success");
+function stopAudioRecord() {
   mediaRecorder.stop();
+  $.notify("Audio uploaded successfully!", "success");
   setTimeout(()=>window.close(), 1000);
 }
 
@@ -367,7 +374,7 @@ async function audioUpload(blob) {
           "-"
         );
 
-      formData.append("file", blob, `Audio Record - ${timestamp(new Date())}.wav`);
+      formData.append("file", blob, `Audio Capture - ${timestamp(new Date())}.wav`);
 
       if (
         d.token == null ||
