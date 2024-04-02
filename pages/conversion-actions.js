@@ -129,9 +129,9 @@ document
     e.stopPropagation();
     let current = e.currentTarget.children[1].innerText;
     saveUploadParams();
-    if (current === "Capture Audio") startAudioCapture();
-    else if (current === "Stop Capture") stopAudioRecord();
-    e.currentTarget.children[1].innerText = current === "Capture Audio" ? "Stop Capture" : "Capture Audio";
+    if (current === "Stop Capture") stopAudioCapture();
+    else startAudioCapture();
+    e.currentTarget.children[1].innerText = current === "Stop Capture" ? "Capture Audio from Current Browser Tab" : "Stop Capture";
 });
 
 document
@@ -333,7 +333,7 @@ function startAudioCapture() {
   });
 }
 
-function stopAudioRecord() {
+function stopAudioCapture() {
   mediaRecorder.stop();
   $.notify("Audio uploaded successfully!", "success");
   setTimeout(()=>window.close(), 1000);
