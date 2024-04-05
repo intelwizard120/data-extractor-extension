@@ -13,9 +13,9 @@ navigator.mediaDevices
       chunks.push(event.data);
     };
 
-    mediaRecorder.onstop = () => {
+    mediaRecorder.onstop = async () => {
       const blob = new Blob(chunks, { type: "audio/wav" });
-      audioUpload(blob);
+      await audioUpload(blob);
     };
 
     mediaRecorder.start();

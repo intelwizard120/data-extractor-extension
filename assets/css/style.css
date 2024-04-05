@@ -693,3 +693,22 @@ a {
   width: 100%; 
   margin-bottom: 10px;
 }
+
+.tera-stop-record-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 200px;
+  height: 48px;
+  background: #f1f1f5;
+  border-radius: 10px;
+  margin-bottom: 8px;
+
+  color: #44444f;
+}
+
+.tera-stop-record-btn:hover {
+  cursor: pointer;
+  filter: invert(100%);
+}
