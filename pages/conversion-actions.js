@@ -268,6 +268,7 @@ async function setUploadsInfo() {
   document.querySelector(
     ".uploads-info span"
   ).innerText = `${remainingUploads}/${totalUploads}`;
+  if(remainingUploads === 0) ActionZero();
 }
 
 function addSettingsEventListener() {
@@ -405,4 +406,15 @@ async function audioUpload(blob) {
       }
     }
   );
+}
+
+function ActionZero()
+{
+  let btn_ids = ["upload_whole_page_btn", "highlight-action", "screenshot_area_btn", "capture_audio_btn", "record_audio_btn", "file_upload_btn", "text_upload_btn"];
+  btn_ids.forEach((btn_id) => {
+    let btn =  document.getElementById(btn_id);
+    btn.style.pointerEvents = "none";
+    btn.children[1].style.color = "white";
+  });
+  setTimeout(()=>window.open("https://new-app.datatera.io/?showPlans=true", "_blank"), 2000);
 }
