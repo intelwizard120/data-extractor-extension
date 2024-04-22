@@ -414,7 +414,8 @@ function ActionZero()
   btn_ids.forEach((btn_id) => {
     let btn =  document.getElementById(btn_id);
     btn.style.pointerEvents = "none";
-    btn.children[1].style.color = "white";
+    //btn.children[1].style.color = "white";
   });
+  document.getElementById("transformation-info").style.color = "red";
   setTimeout(()=>window.open("https://new-app.datatera.io/?showPlans=true", "_blank"), 2000);
 }

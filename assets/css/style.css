@@ -672,6 +672,7 @@ a {
 .btn-containers {
   display: flex;
   padding-left: 25px;
+  flex-direction: column;
 }
 .display-flex {
   display: flex;
