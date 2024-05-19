@@ -1,4 +1,4 @@
-# Data Scraping Chrome Extension
+# Data Scraping Chrome Extension (Manifest v3)
 
 ## Use Following Features for Most of the Daily Tasks
 
