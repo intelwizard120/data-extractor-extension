@@ -1,4 +1,4 @@
-# Data Scraping Chrome Extension (jQeury Manifest v3)
+# Data Scraping Chrome Extension
 
 ## Use Following Features for Most of the Daily Tasks
 
