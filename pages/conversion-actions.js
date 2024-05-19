@@ -1,6 +1,8 @@
 let search = location.search.substring(1);
 search = search.split("=");
 let conversionId = search[1];
+let mediaRecorder = null;
+let chunks = [];
 
 const uploadFileToDb = async (data, type, selectedFile) => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -122,6 +124,24 @@ document
   });
 
 document
+  .getElementById("capture_audio_btn")
+  .addEventListener("click", (e) => {
+    e.stopPropagation();
+    let current = e.currentTarget.children[1].innerText;
+    saveUploadParams();
+    if (current === "Stop Capture") stopAudioCapture();
+    else startAudioCapture();
+    e.currentTarget.children[1].innerText = current === "Stop Capture" ? "Capture Audio from Current Browser Tab" : "Stop Capture";
+});
+
+document
+  .getElementById("record_audio_btn")
+  .addEventListener("click", async (e) => {
+    saveUploadParams();
+    await chrome.tabs.create({ url: chrome.runtime.getURL("pages//record.html"), active: true, index: 0, pinned: true });
+});
+
+document
   .getElementById("upload_whole_page_btn")
   .addEventListener("click", (e) => {
     /*     var loaderElement = document.querySelector(".loader");
@@ -238,7 +258,7 @@ async function saveUploadParams() {
     returnRowsLimit,
     model,
   };
-  console.log(data.toString());
+//  console.log(data.toString());
   chrome.storage.local.set({ uploadParams: data });
 }
 
@@ -248,6 +268,7 @@ async function setUploadsInfo() {
   document.querySelector(
     ".uploads-info span"
   ).innerText = `${remainingUploads}/${totalUploads}`;
+  if(remainingUploads === 0) ActionZero();
 }
 
 function addSettingsEventListener() {
@@ -279,4 +300,122 @@ function notify(msg) {
     className: "success",
     globalPosition: "top right",
   });
+}
+
+function startAudioCapture() {
+  chrome.tabCapture.capture({
+    audio: true,
+    video: false,
+  }, (stream) => {
+    let context = new AudioContext();
+    let tstream = context.createMediaStreamSource(stream);
+    tstream.connect(context.destination);
+
+    mediaRecorder = new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable = (event) => {
+      chunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(chunks, { type: 'audio/wav' });
+      // const url = URL.createObjectURL(blob);
+      // const a = document.createElement('a');
+      // a.href = url;
+      // a.download = 'captured_audio.wav';
+      // document.body.appendChild(a);
+      // a.click();
+      // document.body.removeChild(a);
+      chunks = [];
+      audioUpload(blob);
+    };
+
+    mediaRecorder.start();
+  });
+}
+
+function stopAudioCapture() {
+  mediaRecorder.stop();
+  $.notify("Audio uploaded successfully!", "success");
+  setTimeout(()=>window.close(), 1000);
+}
+
+async function audioUpload(blob) {
+  // var [header, base64] = image.split(",");
+  // var [_, type] = /data:(.*);base64/.exec(header);
+  // var binary = atob(base64);
+  // var array = new Uint8Array(
+  //   Array.from({ length: binary.length }, (_, index) =>
+  //     binary.charCodeAt(index)
+  //   )
+  // );
+
+  // const file = new File([array], fileName, { type });
+  const [tab] = await chrome.tabs.query({ active: true });
+  let sourceUrl = tab.url;
+
+  chrome.storage.local.get(
+    ["token", "userData", "baseUrl", "conversionId", "uploadParams"],
+    (d) => {
+      let baseUrl = d.baseUrl;
+      let formData = new FormData();
+      formData.append("sourceUrl", sourceUrl);
+      formData.append("id", d.conversionId);
+      formData.append("isBackground", true);
+      //formData.append("model", 1);
+      //formData.append("processUrls", false);
+
+      for (const k in d.uploadParams) {
+        formData.append(k, d.uploadParams[k]);
+      }
+
+      var pad = (n) => ((n = n + ""), n.length >= 2 ? n : `0${n}`);
+      var timestamp = (now) =>
+        [pad(now.getFullYear()), pad(now.getMonth() + 1), pad(now.getDate())].join(
+          "-"
+        ) +
+        " - " +
+        [pad(now.getHours()), pad(now.getMinutes()), pad(now.getSeconds())].join(
+          "-"
+        );
+
+      formData.append("file", blob, `Audio Capture - ${timestamp(new Date())}.wav`);
+
+      if (
+        d.token == null ||
+        d.token == undefined ||
+        d.token == "" ||
+        d.userData == null ||
+        d.userData == undefined ||
+        d.conversionId == null ||
+        d.conversionId == undefined
+      ) {
+        console.log("Audio Upload: Missing Form Data");
+      } else {
+        //console.log("Form data (screenshot): "+formData);
+        fetch(`${baseUrl}/v1/conversion/uploadFileToDb`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bear " + d.token,
+          },
+          body: formData,
+          credentials: "include",
+        })
+          .then((res) => res.json())
+          .then((resp) => console.log(resp));
+      }
+    }
+  );
+}
+
+function ActionZero()
+{
+  let btn_ids = ["upload_whole_page_btn", "highlight-action", "screenshot_area_btn", "capture_audio_btn", "record_audio_btn", "file_upload_btn", "text_upload_btn"];
+  btn_ids.forEach((btn_id) => {
+    let btn =  document.getElementById(btn_id);
+    btn.style.pointerEvents = "none";
+    //btn.children[1].style.color = "white";
+  });
+  document.getElementById("transformation-info").style.color = "red";
+  setTimeout(()=>window.open("https://new-app.datatera.io/?showPlans=true", "_blank"), 2000);
 }

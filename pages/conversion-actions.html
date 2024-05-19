@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datatera Popup</title>
     <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/vendor/jquery-confirm.min.css">
     <style>
         .tera-container {
             height: auto;
@@ -28,19 +29,19 @@
         </section>
 
         <div class="uploads-info">
-            Transformations left in this month: <span>0/0</span>
+            Transformations left in this month: <span id="transformation-info">0/0</span>
         </div>
 
         <div class="loader display-none"></div>
 
-        <br/>
+        <!-- <br/> -->
         <div class="btn-containers">
-            <div>
+            <div style="margin: 3px 0;">
                 <div class="display-flex align-items-center ">
                     <input type="checkbox" id="processURLs" name="processURLs">
-                    <label for="processURLs" style="margin-left: 5px;" class="options-text">Process URLs</label>
+                    <label for="processURLs" style="margin-left: 5px;" class="options-text">Use URLs (will find all URLs, download web pages and process them 1-by-1. Each URL will count as one transformation)</label>
                 </div>
-                <div style="margin-top: 10px;">
+                <!-- <div style="margin-top: 10px;">
                     <label for="returnRowsLimit" class="options-text" hidden>Return rows limit <br />(0 for unlimited
                         rows):</label>
                     <br hidden/>
@@ -49,18 +50,18 @@
                     <br hidden/>
                     <label for="model" class="options-text" hidden>AI model:</label>
                     <input type="number" id="model" name="model" value="1" style="width: 50px;margin-top: 5px;" hidden>
-                </div>
+                </div> -->
             </div>
-            <div style="margin-left: 30px;">
+            <div  style="margin: 3px 0;">
                 <div style="display: flex;align-items: center;">
                     <input type="checkbox" id="smartMerge" name="smartMerge">
-                    <label for="smartMerge" style="margin-left: 5px;" class="options-text">Smart Merge</label>
+                    <label for="smartMerge" style="margin-left: 5px;" class="options-text">Merge results to one row (if checked wit ill return only one merged row of data)</label>
                 </div>
 
-                <div style="margin-top: 10px;" hidden>
+                <!-- <div style="margin-top: 10px;" hidden>
                     <br />
                     
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -78,7 +79,16 @@
                 <img class="tera-action-icon" src="/assets/images/screenshot.png" alt="">
                 <p>Screenshot Area of Webpage to Transform</p>
             </div>
+            <div class="tera-action-btn" id="capture_audio_btn">
+                <img class="tera-action-icon" src="/assets/images/headphone.png" alt="">
+                <p>Capture Audio from Current Browser Tab</p>
+            </div>
             <hr class="divider" />
+            <div class="tera-action-btn" id="record_audio_btn">
+                <img class="tera-action-icon" src="/assets/images/microphone.png" alt="">
+                <p>Record Audio</p>
+            </div>
+            
             <div class="tera-action-btn" id="file_upload_btn">
                 <img class="tera-action-icon" src="/assets/images/upload.png" alt="">
                 <p>Upload File to Transform</p>
@@ -110,6 +120,7 @@
 
     <script src="../assets/js/jquery.min.js"></script>
     <script src="../assets/vendor/notify.min.js"></script>
+    <script src="../assets/vendor/jquery-confirm.min.js"></script>
     <script src="./screenshot-area.js"></script>
     <script src="./logout.js"></script>
 

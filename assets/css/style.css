@@ -482,7 +482,7 @@ a {
   justify-content: center;
 
   width: 279px;
-  height: 48px;
+  height: 36px;
   background: #f1f1f5;
   border-radius: 10px;
   margin-bottom: 8px;
@@ -672,6 +672,7 @@ a {
 .btn-containers {
   display: flex;
   padding-left: 25px;
+  flex-direction: column;
 }
 .display-flex {
   display: flex;
@@ -692,4 +693,23 @@ a {
   border-top: 1px solid rgba(200, 200, 200, 0.5); 
   width: 100%; 
   margin-bottom: 10px;
+}
+
+.tera-stop-record-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 200px;
+  height: 48px;
+  background: #f1f1f5;
+  border-radius: 10px;
+  margin-bottom: 8px;
+
+  color: #44444f;
+}
+
+.tera-stop-record-btn:hover {
+  cursor: pointer;
+  filter: invert(100%);
 }
